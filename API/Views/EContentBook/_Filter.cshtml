@@ -1,0 +1,39 @@
+﻿
+<div class="card filter-section">
+    <div class="card-body">
+        <form data-ajax="true" data-ajax-mode="replace" data-ajax-method="GET" asp-action="GetEbooksList" data-ajax-success="onSuccess" autocomplete="off">
+            <div class="row gy-2 gx-2 align-items-center">
+                <div class="col-lg-1 col-md-4 col-sm-4 col-form-label">
+                    <i class="fa-solid fa-filter me-2"></i> <label class="text-dark">Filter By:</label>
+                </div>
+                <label class="col-lg-1 col-md-4 col-sm-4 col-form-label required">Class</label>
+                <div class="col-lg-2 col-md-4 col-sm-4 me-4">
+                    <select name="classId" aria-required="true" class="form-select" required>
+                        <option disabled="" label="Select a Class" selected="" value=""></option>
+                        <option label="10" value="10">10</option>
+                        <option label="12" value="12">12</option>
+                    </select>
+                </div>
+                <label class="col-lg-1 col-md-4 col-sm-4 col-form-label required">Status</label>
+                <div class="col-lg-2 col-md-4 col-sm-4">
+                    <select name="isActive" class="form-select" data-bs-drop="down" data-bs-display="static">
+                        <option value="true">Active</option>
+                        <option value="false">In-Active</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-12 col-sm-12 text-end">
+                    <button type="submit" id="filter-ebooks" value="Search" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here, to search records" class="btn btn-sm text-white rounded-pill" style="background-color: #DB4B73">
+                        <i class="fa-solid fa-magnifying-glass"></i> Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function onSuccess(data){
+        $("#div-ebook-list").html(data.htmlData);
+        BasicDatatable();
+    }
+</script>

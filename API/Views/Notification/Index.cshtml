@@ -1,0 +1,19 @@
+﻿@using Application.DTOs.Notification
+@model List<Application.DTOs.Notification.NotificationResponseDTO>
+
+@{
+    ViewData["Title"] = "Notifications";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<partial name="_Notification"/>
+
+<div class="row p-4">
+    <div id="notification-list">
+        @{
+            await Html.RenderPartialAsync("_NotificationsList", Model);
+        }
+    </div>
+
+    <partial name="_AddUpdateNewNotification" model="new NotificationRequestDTO()"/>
+</div>

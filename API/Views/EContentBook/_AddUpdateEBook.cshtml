@@ -1,0 +1,134 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Application.DTOs.EContentBooks.EContentBookRequestDTO
+
+<form data-ajax="true" data-ajax-mode="replace" data-ajax-method="POST" enctype="multipart/form-data" autocomplete="off" asp-controller="EContentBook" asp-action="SaveEBook" data-ajax-success="onSuccessSaveEBooks">
+    <div id="upload-ebook" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="info-header-modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #DB4B73">
+                    <h4 class="modal-title text-white">Upload E-Books</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <input type="hidden" asp-for="Id" class="form-control" required />
+                        <div class="col-md-4">
+                            <label class="form-label required">Class</label>
+                            @if (Model.Id == 0)
+                            {
+                                <select asp-for="ClassId" aria-required="true" class="form-select" required onchange="bindSubjects()">
+                                    <option disabled="" label="Select a Class" selected="" value=""></option>
+                                    <option label="10" value="10">10</option>
+                                    <option label="12" value="12">12</option>
+                                </select>
+                            }
+                            else
+                            {
+                                <input asp-for="ClassId" class="form-control" readonly="readonly" />
+                            }
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label required">Subject</label>
+                            @if (Model.Id == 0)
+                            {
+                                <select asp-for="SubjectId" class="form-select" data-bs-drop="down" data-bs-display="static" required>
+                                    <option value="" selected>Select a Subject</option>
+                                </select>
+                            }
+                            else
+                            {
+                                <input asp-for="SubjectId" class="form-control" type="hidden" />
+                                <input asp-for="SubjectName" class="form-control" readonly="readonly" />
+                            }
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label required">Volume</label>
+                            @if (Model.Id == 0)
+                            {
+                                <select asp-for="Volume" aria-required="true" class="form-select" required>
+                                    <option disabled="" label="Select a Volume" selected="" value=""></option>
+                                    <option label="VOL I" value="VOL I">VOL I</option>
+                                    <option label="VOL II" value="VOL II">VOL II</option>
+                                    <option label="VOL III" value="VOL III">VOL III</option>
+                                    <option label="VOL IV" value="VOL IV">VOL IV</option>
+                                    <option label="VOL V" value="VOL V">VOL V</option>
+                                </select>
+                            }
+                            else
+                            {
+                                <input asp-for="Volume" class="form-control" readonly="readonly" />
+                            }
+                        </div>
+                        <div class="col-md-4 mt-2">
+                            <label class="form-label mt-2 required">Name of the Book</label>
+                            <input type="text" asp-for="NameOfBook" class="form-control" required minlength="3" maxlength="50">
+                        </div>
+                        <div class="col-md-8 mt-2">
+                            <div class="col-md-4 mt-2">
+                                @if (Model.Id == 0)
+                                {
+                                    <label class="form-label required">Select a File</label>
+                                }
+                                else
+                                {
+                                    <label class="form-label">Select a File</label>
+                                }
+                            </div>
+                            <div class="col-md-8">
+                                @if (Model.Id == 0)
+                                {
+                                    <input type="file" asp-for="EBookFile" class="form-control" required="required" accept="application/pdf" onchange="checkFileSize(this)">
+                                }
+                                else
+                                {
+                                    <input type="file" asp-for="EBookFile" class="form-control" accept="application/pdf" onchange="checkFileSize(this)">
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-4 text-md-end">
+                        <button type="submit" class="btn text-white mt-2" style="background-color: #DB4B73" value="Save">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    function bindSubjects(){
+        $.ajax({
+            type: 'GET',
+            dataType: 'JSON',
+            url: '/Content/GetSubjectsByClass/',
+            data: { classId: $('#ClassId').val() },
+            success: function (data) {
+                let items = "<option value=''>Select a Subject</option>";
+                $('#SubjectId').empty();
+
+                $.each(data, function (key, value) {
+                    items += "<option value='" + value.value + "'>" + value.text + "</option>"
+                });
+
+                $('#SubjectId').html(items);
+            },
+            error: function (response) {
+                toastr.warning('Error occurred while binding class dropdown.');
+            }
+        });
+    }
+
+    function checkFileSize(input) {
+        if (input.files && input.files[0]) {
+            let fileSize = input.files[0].size;
+            let maxSize = 50 * 1024 * 1024;
+
+            if (fileSize > maxSize) {
+                toastr.warning('File size exceeds the limit of 50 MB. Please choose a smaller file.');
+                input.value = '';
+            }
+        }
+    }
+</script>

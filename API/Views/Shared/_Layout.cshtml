@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - RSOS</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/API.styles.css" asp-append-version="true"/>
+	<link href="~/lib/quill-1.3.6/quill/quill/quill.snow.css" rel="stylesheet">
+    <link href="~/lib/quill-1.3.6/quill/quill/quill.bubble.css" rel="stylesheet">
+    <link href="~/assets/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="~/lib/toastr/build/toastr.min.css">
+    <link rel="stylesheet" href="~/lib/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link href="~/lib/bootstrap-5.3.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="~/lib/jquery 3.6.4/dist/jquery.min.js"></script>
+    <script src="~/lib/quill-1.3.6/quill-1.3.6/quill.js"></script>
+    <script src="~/lib/quill-1.3.6/quill/quill/quill.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/lib/toastr/build/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="~/lib/fontawesome- 6.5.1/css/all.min.css">
+    <script src="~/lib/toastr/build/toastr.min.js"></script>
+    <script src="~/js/aes.js"></script>
+    <link rel="shortcut icon" href="~/favicon.ico" asp-append-version="true">
+    <style>
+        .header-container {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+    
+        .logo {
+            max-width: 250px; 
+            margin-right: 20px; 
+        }
+    
+        .nav {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+    
+        .nav-item {
+            margin-right: 15px; 
+        }
+    
+        .nav-link {
+            text-decoration: none;
+            color: black; 
+        }
+        
+        .container-fluid-item {
+            background-color: #f8f8f8;
+            min-height: 100vh;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<partial name="_LoadingPanel"/>
+<nav class="navbar navbar-light p-0">
+    <div class="container-fluid p-0 header-container">
+        <img src="~/images/navbar.png" alt="logo" class="logo">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Notification" asp-action="Index">Notification</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="NewsAndAlert" asp-action="Index">News And Alerts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="PCP" asp-action="Index">Questions</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Content" asp-action="Index">eContents</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="EContentBook" asp-action="Index">eBooks</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="PcpDates" asp-action="Index">ePCP Dates</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Home" asp-action="ChangePassword">Change Password</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Home" asp-action="DownloadApkFile">Download APK</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Home" asp-action="Logout">Log Out</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container-fluid-item">
+    <partial name="_SessionExpiry"/>
+    <div class="row m-0">
+        @RenderBody()
+    </div>
+</div>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/bootstrap-4.5.3-dist/js/bootstrap.min.js"></script>
+<script src="~/lib/DataTables/datatables.min.js"></script>
+<script src="~/lib/font-awesome-4.7.0/css/font-awesome.css"></script>
+<script src="~/lib/jquery.unobtrusive-ajax.min.js_3.2.6/cdnjs/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/js/ajax.js" asp-append-version="true"></script>
+<script src="~/assets/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+<script src="~/assets/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/assets/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
+<script src="~/assets/demo.datatable-init.js"></script>
+
+@await RenderSectionAsync("Scripts", required: false)
+
+<script type="text/javascript">
+        let inactivityTime = function () {
+            let time;
+            const inactivityTimeOut = 900000; // 15 minutes to milliseconds
+    
+            function updateActivityTimestamp() {
+                localStorage.setItem('lastActivity', Date.now().toString());
+            }
+        
+            function checkInactivity() {
+                let lastActivity = parseInt(localStorage.getItem('lastActivity') || '0', 10);
+                let currentTime = Date.now();
+        
+                if (currentTime - lastActivity >= inactivityTimeOut) {
+                    logout();
+                }
+            }
+    
+            window.onload = function () {
+                updateActivityTimestamp();
+                resetTimer();
+            };
+    
+            document.onmousemove = function () {
+                updateActivityTimestamp();
+                resetTimer();
+            };
+        
+            document.onkeypress = function () {
+                updateActivityTimestamp();
+                resetTimer();
+            };
+    
+            window.addEventListener('scroll', function () {
+                updateActivityTimestamp();
+                resetTimer();
+            });
+    
+            function logout() {
+                $('#alert-logout-modal').modal('show');
+            }
+        
+            function resetTimer() {
+                clearTimeout(time);
+                time = setTimeout(checkInactivity, inactivityTimeOut);
+            }
+    
+            document.getElementById('refreshSession').addEventListener('click', function () {
+                updateActivityTimestamp();
+                resetTimer();
+            });
+    
+            setInterval(checkInactivity, 3000); 
+        };
+    
+        window.onload = function () {
+            inactivityTime();
+        };
+        
+        let initialCountdownTime = 300;
+        let countdownTime = initialCountdownTime;
+        
+        let countdownInterval;
+        
+        function updateCountdown() {
+            let minutes = Math.floor(countdownTime / 60);
+            let seconds = countdownTime % 60;
+
+            document.getElementById("countdown").textContent = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+
+            countdownTime--;
+            if (countdownTime < 0) {
+                $.ajax({
+                    url: '@Url.Action("Logout", "Home")',
+                    type: 'GET',
+                    success: function (result) {
+                        window.location.href = '@Url.Action("Login", "Home")';
+                        localStorage.setItem('lastActivity', Date.now().toString());
+                    },
+                    failure: function (response) {
+                    }
+                });
+            } 
+        }
+        
+        function startCountdown() {
+            countdownTime = initialCountdownTime;
+            clearInterval(countdownInterval); 
+            updateCountdown(); 
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+
+        $('#alert-logout-modal').on('shown.bs.modal', function () {
+            startCountdown();
+        });
+       
+        $('#alert-logout-modal').on('hidden.bs.modal', function () {
+            clearInterval(countdownInterval);
+        });
+    </script>
+</body>
+</html>

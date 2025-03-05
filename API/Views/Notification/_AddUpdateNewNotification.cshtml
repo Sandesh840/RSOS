@@ -1,0 +1,49 @@
+﻿@model Application.DTOs.Notification.NotificationRequestDTO
+
+<form data-ajax="true" data-ajax-mode="replace" data-ajax-method="POST" enctype="multipart/form-data" asp-controller="Notification"  asp-action="Upsert" data-ajax-success="onSuccessNotification">
+    <div id="add-notification" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="info-header-modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header modal-colored-header" style="background-color: #DB4B73">
+                    <h4 class="modal-title text-white">Add Notification</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body" style="overflow: auto">
+                    <input type="hidden" asp-for="@Model.Id" class="form-control" />
+                    <div class="mb-3">
+                        <label asp-for="@Model.Title" class="form-label mb-2">@Model.Title</label>
+                        <input type="hidden" id="notification-header" asp-for="@Model.Title" class="form-control"/>
+                        <div id="editor_header" class="editor_header note-editor mb-2" style="height: 50px;"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@Model.Description" class="form-label mb-2">@Model.Description</label>
+                        <input type="hidden" id="notification-description" asp-for="@Model.Description" class="form-control"/>
+                        <div id="editor_description" class="editor_description note-editor mb-2" style="height: 250px;"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@Model.ValidFrom" class="form-label mb-2">Valid From</label>
+                        <input type="datetime-local" asp-for="@Model.ValidFrom" id="validFrom" class="form-control" onchange="setEndDateMinValue()" required="required"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@Model.ValidTill" class="form-label mb-2">Valid Till</label>
+                        <input type="datetime-local" asp-for="@Model.ValidTill" id="validTill" class="form-control" required="required"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@Model.UploadedFileUrl" class="form-label mb-2">Uploaded File</label>
+                        <input type="file" asp-for="@Model.UploadedFile" id="fileInput" class="form-control"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn d-w text-white" style="background-color: #DB4B73" value="Save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    function setEndDateMinValue(){
+        let startDateValue = $('#validFrom').val();
+        $('#validTill').attr('min', startDateValue);
+    }
+</script>

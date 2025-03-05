@@ -1,0 +1,178 @@
+﻿@model List<Application.DTOs.EContentBooks.EContentBookResponseDTO>
+
+<style>
+    #basic-datatable th,
+    #basic-datatable td {
+        white-space: normal;
+        word-wrap: break-word;
+    }
+
+    #basic-datatable th:nth-child(2),
+    #basic-datatable td:nth-child(2) {
+        max-width: 300px;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-6">
+                <div class="text-start">
+                    <div class="page-title-box">
+                        <h4 class="page-title">E-Books</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-end">
+                    <button type="button" class="btn w-b btn-sm btn-rounded text-white" style="background-color: #DB4B73" onclick="onAddUpdateEBook(0)">
+                        Add New E Book
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <table id="basic-datatable" class="basic-datatable table table-hover dt-responsive nowrap w-100">
+            <thead>
+                <tr>
+                    <th style="width:5%">#</th>
+                    <th style="width:15%">Subject</th>
+                    <th style="width:15%">Name of the Book</th>
+                    <th style="width:10%">Volume</th>
+                    <th style="width:30%">File Name</th>
+                    <th style="width:5%">Download</th>
+                    <th style="width:10%">
+                        @if (Model.Any())
+                        {
+                            if (Model.Any(x => x.IsActive))
+                            {
+                                <span>Active</span>
+                            }
+                            else
+                            {
+                                <span>Deleted Time</span>
+                            }
+                        }
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var eBook in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span>@(Model.ToList().IndexOf(eBook) + 1).</span>
+                            </td>
+                            <td>
+                                @eBook.SubjectName
+                            </td>
+                            <td>
+                                @eBook.NameOfBook
+                            </td>
+                            <td>
+                                @eBook.Volume
+                            </td>
+                            <td>
+                                @eBook.FileName
+                            </td>
+                            <td>
+                                @if (eBook.FileName != "-")
+                                {
+                                    <a asp-controller="EContentBook" asp-action="DownloadEbook" asp-route-fileUrl="@eBook.FileName" class="btn btn-sm btn-outline-pink btn-rounded">
+                                        <i class="fa-solid fa-download"></i>
+                                    </a>
+                                }
+                            </td>
+                            <td class="text-center">
+                                @if (eBook is { IsActive: true, Id: > 0 })
+                                {
+                                    if (eBook.IsActive)
+                                    {
+                                        <a class="btn btn-sm btn-outline-pink btn-rounded float-end" onclick="changeEBooksStatus(@eBook.Id)">
+                                            <i class="fa-regular fa-circle-xmark"></i>
+                                        </a>
+                                        <a class="btn btn-sm btn-outline-pink btn-rounded float-end" onclick="onAddUpdateEBook(@eBook.Id)">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-sm btn-outline-pink btn-rounded" onclick="changeEBooksStatus(@eBook.Id)">
+                                            <i class="fa-solid fa-check-double"></i>
+                                        </a>
+                                    }
+                                }
+                                else
+                                {
+                                    @eBook.UploadedDate
+                                }
+                            </td>
+                        </tr>                      
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function onAddUpdateEBook(index) {  
+        $.ajax({
+            type: 'GET',
+            url: '/EContentBook/GetEBookById',
+            data: { ebookId: index },
+            contentType: 'application/json',
+            dataType: "JSON",
+            success: function (result) {
+                $("#upload-questions-view").html(result.data);
+                $('#upload-ebook').modal('show');
+            }
+        });
+    }
+
+    toastr.options = {
+        "closeButton": true
+    };
+
+    function onSuccessSaveEBooks(data) {
+        if (data.valid){
+            toastr.success("eBook Successfully Uploaded");
+            $('#upload-ebook').modal('hide');
+            $("#filter-ebooks").trigger('click');
+        }
+        else {
+            toastr.warning("There is an existing book under the same subject, class and volume.");
+        }
+    }
+    
+    function changeEBooksStatus(index) {
+        $("#ebookId").val(index);
+        $("#info-header-modal").modal("show");
+    }
+
+    function ActivateDeactivate(){
+        let index = $("#ebookId").val();  
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("DeleteEBook", "EContentBook")',
+            data: { eBookId: index },
+            contentType: 'application/x-www-form-urlencoded',
+            dataType: "JSON",
+            success: function(result) {
+                toastr.success(result.data);
+                $("#filter-ebooks").trigger('click');
+            },
+            error: function(xhr, status, error) {           
+                let errorMessage = eval("(" + xhr.responseText + ")");
+                toastr.warning(errorMessage);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        BasicDatatable();
+    });
+</script>

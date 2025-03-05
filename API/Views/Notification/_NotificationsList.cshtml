@@ -1,0 +1,303 @@
+﻿@model List<Application.DTOs.Notification.NotificationResponseDTO>
+
+<style>
+    #basic-datatable th,
+    #basic-datatable td {
+        white-space: normal; 
+        word-wrap: break-word; 
+    }
+
+    #basic-datatable th:nth-child(2), 
+    #basic-datatable td:nth-child(2) {
+        max-width: 150px;
+    }
+
+    #basic-datatable th:nth-child(3), 
+    #basic-datatable td:nth-child(3) {
+        max-width: 300px;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-6">
+                <div class="text-start">
+                    <div class="page-title-box">
+                        <h4 class="page-title">Notifications</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                 <div class="text-end">
+                    <button type="button" class="btn w-b text-white btn-sm btn-rounded" style="background-color: #DB4B73" onclick="onAddUpdateNotification(0)">
+                        Add New Notification
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <table id="basic-datatable" class="basic-datatable table table-hover dt-responsive nowrap w-100">
+            <thead>
+                <tr>
+                    <th style="width:5%">#</th>
+                    <th style="width:25%">Header</th>
+                    <th style="width:25%">Description</th>
+                    <th style="width:10%">Download File</th>
+                    <th style="width:10%">Valid From</th>
+                    <th style="width:10%">Valid Till</th>
+                    <th style="width:10%">Created On</th>
+                    <th style="width:5%">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Any())
+            {
+                foreach (var notification in Model)
+                {
+                    if (notification.IsActive == 1)
+                    {
+                        <tr>
+                            <td>
+                                <span>@(Model.ToList().IndexOf(notification) + 1).</span>
+                            </td>
+                            <td>
+                                @Html.Raw(notification.Title)
+                            </td>
+                            <td>
+                                @Html.Raw(notification.Description)
+                            </td>
+                            <td class="text-center">
+                                @if (notification.UploadedFileUrl != null)
+                                {
+                                    <a asp-controller="Notification" asp-action="DownloadDocument" asp-route-notificationId="@notification.Id" class="btn btn-sm btn-outline-pink btn-rounded">
+                                        <i class="fa-solid fa-download"></i>
+                                    </a>
+                                }
+                            </td>
+                            <td>
+                                @notification.ValidFrom.ToString("dd-MM-yyyy h:mm:ss tt")
+                            </td>
+                            <td>
+                                @notification.ValidTill.ToString("dd-MM-yyyy h:mm:ss tt")
+                            </td>
+                            <td>
+                                @notification.CreatedOn.ToString("dd-MM-yyyy h:mm:ss tt")
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-pink btn-rounded" onclick="onAddUpdateNotification(@notification.Id)">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </a>
+                                <a class="btn btn-sm btn-outline-pink btn-rounded" onclick="changeNotificationStatus(@notification.Id)">
+                                    <i class="fa-regular fa-circle-xmark"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="text-danger">
+                                <span>@(Model.ToList().IndexOf(notification) + 1).</span>
+                            </td>
+                            <td class="text-danger">
+                                @Html.Raw(notification.Title)
+                            </td>
+                            <td class="text-danger">
+                                @Html.Raw(notification.Description)
+                            </td>
+                            <td class="text-center text-danger">
+                                @if (notification.UploadedFileUrl != null)
+                                {
+                                    <a asp-controller="Notification" asp-action="DownloadDocument" asp-route-notificationId="@notification.Id" class="btn btn-sm btn-outline-pink btn-rounded">
+                                        <i class="fa-solid fa-download"></i>
+                                    </a>
+                                }
+                            </td>
+                            <td class="text-danger">
+                                @notification.ValidFrom.ToString("dd-MM-yyyy h:mm:ss tt")
+                            </td>
+                            <td class="text-danger">
+                                @notification.ValidTill.ToString("dd-MM-yyyy h:mm:ss tt")
+                            </td>
+                            <td class="text-danger">
+                                @notification.CreatedOn.ToString("dd-MM-yyyy h:mm:ss tt")
+                            </td>
+                            <td class="text-danger">
+                                <a class="btn btn-sm btn-outline-pink btn-rounded" onclick="changeNotificationStatus(@notification.Id)">
+                                    <i class="fa-solid fa-check-double"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    let quill = null;
+    let editor = null;
+    
+    function onAddUpdateNotification(index){
+        if (!quill || !editor){
+            quill = new Quill('.editor_header', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ font: [] }, { size: [] }],
+                        ["bold", "italic", "underline", "strike"],
+                        [{ color: [] }, { background: [] }],
+                        [{ script: "super" }, { script: "sub" }],
+                        [{ header: [!1, 1, 2, 3, 4, 5, 6] }],
+                        [{ list: "ordered" }, { list: "bullet" }],
+                        ["direction", { align: [] }],
+                        ["clean"]
+                    ],
+                    clipboard: {
+                        matchVisual: false, 
+                    },
+                },
+            });
+        
+            quill.on('text-change', function (delta, oldDelta, source) {
+                let content = quill.root.innerHTML;
+                let inputField = "#notification-header";
+                $(inputField).val(content);
+            });
+            
+            editor = new Quill('.editor_description', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ font: [] }, { size: [] }],
+                        ["bold", "italic", "underline", "strike"],
+                        [{ color: [] }, { background: [] }],
+                        [{ script: "super" }, { script: "sub" }],
+                        [{ header: [!1, 1, 2, 3, 4, 5, 6] }],
+                        [{ list: "ordered" }, { list: "bullet" }],
+                        ["direction", { align: [] }],
+                        ["clean"]
+                    ],
+                    clipboard: {
+                        matchVisual: false, 
+                    },
+                },
+            });
+        
+            editor.on('text-change', function (delta, oldDelta, source) {
+                let content = editor.root.innerHTML;
+                let inputField = "#notification-description";
+                $(inputField).val(content);
+            });
+        }
+        
+        if (index === 0){
+            $('#Id').val('');
+            $('#notification-header').val('');
+            $('#notification-description').val('');
+            $('#fileInput').val('');
+            $('#validFrom').val('');
+            $('#validTill').val('');
+            
+            let today = new Date();
+            let year = today.getFullYear();
+            let month = String(today.getMonth() + 1).padStart(2, '0'); 
+            let day = String(today.getDate()).padStart(2, '0');
+            let hours = String(today.getHours()).padStart(2, '0');
+            let minutes = String(today.getMinutes()).padStart(2, '0');
+            let formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+            
+            $('#validFrom').attr('min', formattedDateTime);
+                                
+            quill.setText("");
+            editor.setText("");
+            
+            $('#add-notification').modal('show');
+        }
+        else {
+            $.ajax({
+                type: 'GET',
+                url: '/Notification/GetNotificationById',
+                data: { notificationId: index },
+                contentType: 'application/json',
+                dataType: "JSON",
+                success: function(result) {
+                    $('#Id').val(result.data.id);
+                    $('#fileInput').val('');
+                    $('#validFrom').val(result.data.validFrom);
+                    $('#validTill').val(result.data.validTill);
+                    $('#notification-header').val(result.data.title);
+                    $('#notification-description').val(result.data.description);
+                    
+                    let today = new Date().toISOString().slice(0, 16);
+                    $('#validFrom').attr('min', today);
+                    
+                    if (result.data.title !== undefined) {
+                        quill.clipboard.dangerouslyPasteHTML(result.data.title);
+                    } else {
+                        quill.setText(""); 
+                    }
+                    if (result.data.description !== undefined) {
+                        editor.clipboard.dangerouslyPasteHTML(result.data.description);
+                    } else {
+                        editor.setText(""); 
+                    }
+                    $('#add-notification').modal('show');
+                }
+            });
+        }
+    }
+    
+    toastr.options = {
+        "closeButton": true
+    };
+    
+    function onSuccessNotification(data){
+        if (data.errorType === 0){
+            toastr.warning(data.message);
+            return;
+        }
+        
+        if (data.errorType === -1) {
+            toastr.warning(data.message);
+            return;
+        }
+        
+        if (data.errorType === 1) {
+            toastr.warning("Please insert all the required fields.");
+            return;
+        }
+        
+        if (data.action === 1){
+            toastr.success("Notification successfully updated.");
+        }
+        else {
+            toastr.success("Notification successfully saved.");
+        }
+        
+         $('#add-notification').modal('hide');
+         $('#notification-list').html(data.htmlData);
+    }
+    
+    function changeNotificationStatus(index) {
+        $.ajax({
+            type: 'POST',
+            url: '/Notification/UpdateNotificationStatus',
+            data: { notificationId: index },
+            contentType: 'application/x-www-form-urlencoded',
+            dataType: "JSON",
+            success: function(result) {
+                toastr.success(result.data);
+                $('#notification-list').html(result.htmlData);
+            },
+            error: function(xhr, status, error) {           
+                let errorMessage = eval("(" + xhr.responseText + ")");
+                toastr.warning(errorMessage);
+            }
+        });
+    }
+</script>

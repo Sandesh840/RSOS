@@ -1,0 +1,56 @@
+﻿@model List<Application.DTOs.PCP.PCPQuestionResponseDTO>
+
+<div id="uploaded-questions-list" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="info-header-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header modal-colored-header" style="background-color: #DB4B73">
+                <h4 class="modal-title text-white">Download Questions</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body" style="overflow: auto">
+                <table class="table table-hover dt-responsive nowrap w-100">
+                    <thead>
+                    <tr>
+                        <th style="width: 5%">#</th>
+                        <th>Code</th>
+                        <th>Subject</th>
+                        <th>Type</th>
+                        <th>Is Archived</th>
+                        <th>Uploaded On</th>
+                        <th style="width: 10%">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var questionSheet in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span>@(Model.ToList().IndexOf(questionSheet) + 1).</span>
+                            </td>
+                            <td>@questionSheet.Code</td>
+                            <td>@questionSheet.Subject</td>
+                            <td>@questionSheet.Type</td>
+                            <td>
+                                @if (questionSheet.IsArchived)
+                                {
+                                    <span class="badge bg-danger text-light">Yes</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success text-light">No</span>
+                                }
+                            </td>
+                            <td>@questionSheet.UploadedDate</td>
+                            <td>
+                                <a asp-controller="PCP" asp-action="DownloadQuestionSheet" asp-route-questionSheetId="@questionSheet.Id" class="btn btn-sm btn-outline-pink btn-rounded">
+                                    <i class="fa-solid fa-download"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

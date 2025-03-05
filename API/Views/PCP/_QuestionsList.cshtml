@@ -1,0 +1,125 @@
+﻿@model Application.DTOs.PCP.PCPQuestionsResponseDTO
+
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-lg-6 col-md-6 col-sm-6 text-start">
+                <h4>
+                    @Model.PaperType
+                </h4>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 text-end">
+                <a class="btn d-w text-white" style="background-color: #DB4B73" asp-action="DownloadQuestionTemplate" asp-route-type="@Model.PaperTypeId">Download @Model.PaperType Template</a>
+            </div>
+        </div>
+
+        <table class="table table-hover dt-responsive nowrap w-100">
+            <thead>
+            <tr>
+                <th style="width: 5%">#</th>
+                <th style="width: 5%">Code</th>
+                <th>Subject</th>
+                <th>Paper Uploaded Date</th>
+                <th style="width: 10%">Download</th>
+                <th style="width: 10%">Upload</th>
+                <th style="width: 10%">Archive</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var subject in Model.Questions)
+            {
+                <tr>
+                    <td><span>@(Model.Questions.ToList().IndexOf(subject) + 1).</span></td>
+                    <td>@subject.SubjectCode</td>
+                    <td>@subject.SubjectName</td>
+                    <td>
+                        @if (subject.PaperLastUploadedDate != null)
+                        {
+                            <span>@subject.PaperLastUploadedDate</span>
+                        }
+                    </td>
+                    <td>
+                        @if (subject.AttachmentId is not 0)
+                        {
+                            <a asp-controller="PCP" asp-action="DownloadQuestionSheet" asp-route-questionSheetId="@subject.AttachmentId" class="btn btn-sm btn-outline-pink btn-rounded">
+                                <i class="fa-solid fa-download"></i>
+                            </a>   
+                        }
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-pink btn-rounded" onclick="uploadQuestions(@subject.SubjectId, @Model.PaperTypeId)">
+                            <i class="fa-solid fa-upload"></i>
+                        </a>
+                    </td>
+                    <td>
+                        @if (subject.PaperLastUploadedDate != null)
+                        {
+                            <a class="btn btn-sm btn-outline-pink btn-rounded" onclick="archiveQuestions(@Model.ClassId, @subject.SubjectId, @Model.PaperTypeId)">
+                                <i class="fa-solid fa-filter-circle-xmark"></i>
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function viewUploadedQuestions(subjectId, paperTypeId){
+        $.ajax({
+            type: 'GET',
+            url: '/PCP/GetUploadedQuestionSheets/',
+            data: { subjectCode: subjectId, type: paperTypeId },
+            contentType: 'application/x-www-form-urlencoded',
+            dataType: "JSON",
+            success: function(result) {
+                $('#uploaded-questions-list-view').html(result.htmlData);
+                $("#uploaded-questions-list").modal("show");
+            },
+            error: function(xhr, status, error) {           
+                let errorMessage = eval("(" + xhr.responseText + ")");
+                toastr.warning(errorMessage);
+            }
+        });
+    }
+    
+    function uploadQuestions(subjectId, paperTypeId){
+        $.ajax({
+            type: 'GET',
+            url: '/PCP/GetQuestionSheetDetails/',
+            data: { subjectId: subjectId, type: paperTypeId },
+            contentType: 'application/x-www-form-urlencoded',
+            dataType: "JSON",
+            success: function(result) {
+                $('#upload-questions-view').html(result.htmlData);
+                $("#upload-questions").modal("show");
+            },
+            error: function(xhr, status, error) {           
+                let errorMessage = eval("(" + xhr.responseText + ")");
+                toastr.warning(errorMessage);
+            }
+        });
+    }
+    
+    function archiveQuestions(classId, subjectId, type) {
+        $.ajax({
+            type: 'POST',
+            url: '/PCP/ArchiveQuestionPaperSheet/', 
+            data: { classId: classId, subjectId: subjectId, type: type },
+            contentType: 'application/x-www-form-urlencoded',
+            dataType: "JSON",
+            headers: { "RequestVerificationToken": $("input[name='__RequestVerificationToken']").val() },
+            success: function(data) {
+                $("#div-class-questions-list").html(data.htmlData);
+                toastr.success(data.message);
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+            }
+        });
+    }
+</script>

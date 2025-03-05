@@ -1,0 +1,81 @@
+﻿@model RSOS.Controllers.SurveyCollection
+
+
+<style>
+    p.pagl {
+        display: none;
+    }
+</style>
+<div class="row TblQuestions-ans-wrp">
+    <div class="col-md-12">
+        <div id="renderview">
+            @if (Model != null && Model.TblQuestions != null && Model.TblQuestions.Count() > 0)
+            {
+                <div class="w-100">
+                    <input type="hidden" id="TotalQuestions" value="@Model.TblQuestions.Count()"/>
+                    @{
+                        int i = 1;
+                        foreach (var item in Model.TblQuestions)
+                        {
+                        <div class="question-ans-wrp card" id="@item.Id">
+                            <div class="card-header">
+                                <div class="qestion-head">
+                                    <span class="qest-no">
+                                        @i
+                                    </span>
+                                    <div class="Qestion-text">
+                                        @Html.DisplayFor(modelItem => item.Question)
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="check_qest-wrp card-body">
+                                    <ul class="input-labels">
+                                        @foreach (var common in Model.TblOptions.Where(p => p.Flag == item.Flag).ToList())
+                                        {
+                                            <li>
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" id="@common.CorrectAnswer" type="radio" name="@common.Flag" value="@common.CommonId" /> @common.Value
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                    <div class="d-none">
+                                        <div class="QuestionNo">@i</div>
+                                        <div class="QuestionId">@Html.DisplayFor(modelItem => item.Id)</div>
+                                        <div class="IsQuestionMandatory">@Html.DisplayFor(modelItem => item.PaperType)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            i++;
+                        }
+                            
+                    }
+                </div>
+                <div class="mb-5">
+                    <div class="w-100 row">
+                        <div class="col-lg-9">
+                            <div>Enter captcha image in the textbox</div>
+                            <div class="row">
+                                <span class="col-lg-4" oncopy="return false" onpaste="return false" ondragstart="return false" ondrop="return false" id="prev"></span>
+                                <span class="col-lg-1 text-center"><i title="Refresh" onclick="refreshcaptch()" style="font-size:x-large;font-weight:bold;cursor: pointer;">&#x21bb</i></span>
+                                <span class="col-lg-4"><input type="text" oncopy="return false" ondragstart="return false" ondrop="return false" onpaste="return false" class="form-control" id="Captcha" maxlength="10" autocomplete="off" /></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <button type="button" class="btn btn-success float-start mt-4" onclick="submitResponse()" id="submitResponse">Submit</button>
+                           @*  <h6 class="text-info text-end float-end mt-4"><a asp-controller="DataCapture" asp-action="Index">विषय सूची पर जाएं</a></h6> *@
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            }
+            else
+            {
+                <div>No data found</div>
+            }
+        </div>
+    </div>
+</div>

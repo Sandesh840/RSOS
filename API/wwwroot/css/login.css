@@ -1,0 +1,297 @@
+.navbar-image {
+    display: inline-flex;
+    align-items: center;
+}
+
+img.education-logo {
+    height: 120px;
+    margin-right: 130px;
+}
+
+img.rsos-logo {
+    width: 120px;
+    position: absolute;
+    right: 25px;
+    top: 20px;
+}
+
+.container.login_container {
+    margin: 0 auto;
+    padding: 15px;
+    max-width: 100%;
+}
+
+.rectangle-image-2 {
+    width: 120%;
+    height: 120%;
+    position: fixed;
+    border-radius: 110px;
+    background-color: #DB4B73;
+    transform: rotate(48deg);
+    left: -73%;
+    top: -75%;
+    z-index: -1;
+    opacity: 40%;
+}
+
+.welcomeCard-2 {
+    border-radius: 10px;
+    border: 1px solid #E6E6E6;
+    background-color: #FFFFFF;
+    padding: 15px;
+    text-align: center;
+    /* width: 80%; */
+}
+
+.navbar-image-col {
+    display: inline-flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+img.logo-pic {
+    width: 100px;
+    margin-bottom: 5px;
+}
+
+.welcomeCard-row .ellipse-container {
+    display: none;
+}
+
+.login_header {
+    padding-bottom: 0;
+}
+
+.welcomeTitle-p {
+    color: #4E4E4E;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.info-wel {
+    background: #e8f0fec7;
+    margin-top: 15px;
+    border-radius: 5px;
+    border: 1px solid #dcdee1;
+    font-size: 14px;
+    padding: 7px;
+}
+
+.loginright-sec {
+    padding-right: 25%;
+}
+
+.captcha-container {
+    background-color: #db4b73;
+    padding: 10px;
+    border-radius: 5px;
+    transform: rotate(-2deg);
+    display: inline-block;
+}
+
+.refresh-btn {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.container-login-pk {
+    padding: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+img.pk-image {
+    z-index: -3;
+    position: absolute;
+    right: -54px;
+    bottom: -80px;
+}
+
+.tab-content {
+    padding-top: 30px;
+}
+
+    .tab-content p.poppins-regular {
+        margin-bottom: 30px !important;
+    }
+
+ul.nav.nav-pills a {
+    border: 1px solid #db4b73;
+    margin-right: 15px;
+    color: #db4b73;
+}
+
+    ul.nav.nav-pills a.nav-link.active {
+        color: #fff;
+        background: #db4b73;
+    }
+
+a.nav-link.DownloadApkFile {
+    background: transparent;
+    border: 0 !important;
+    position: absolute;
+    right: -9px;
+    display: flex;
+    margin-right: 0 !important;
+    align-items: center;
+    top: 5px;
+}
+
+span.pk-download {
+    /* width: 50px; */
+    /* height: 50px; */
+    display: inline-block;
+    margin-right: 5px;
+}
+
+    span.pk-download svg {
+        width: 22px;
+    }
+
+        span.pk-download svg path {
+            fill: #db4b73;
+        }
+
+ul.nav.nav-pills {
+    position: relative;
+}
+
+h2.text-danger.poppins-semibold {
+}
+
+.pk-info {
+    background: #e8f0fec7;
+    margin-top: 25px;
+    border-radius: 5px;
+    border: 1px solid #dcdee1;
+    font-size: 14px;
+    padding: 12px;
+}
+
+.welcomeCard-2 h4 {
+    margin-bottom: 0;
+}
+
+.welcomeCard-2 h5 {
+    margin-bottom: 0;
+}
+
+.welcomeCard-2 p {
+    margin-bottom: 0;
+}
+
+.welcomeCard-row {
+    text-align: center;
+    width: 80%;
+    margin-top: 22px;
+}
+
+
+@media (max-width:767px) {
+    .ellipse-container.mt-5 {
+        display: none;
+    }
+
+ 
+  .welcomeCard-row {
+    width: 100%;
+    margin-top: 0;
+}
+
+img.rsos-logo {
+    position: relative;
+    top: 0;
+    right: unset;
+    width: 135px;
+}
+
+img.education-logo {
+    margin-right: 50px;
+}
+
+  
+    .welcomeCard.mt-5 {
+        margin-top: 20px !important;
+    }
+
+    ul.nav.nav-pills {
+        margin-top: 10px !important;
+    }
+
+    .rectangle-image {
+        bottom: unset;
+        top: 0;
+        width: 100%;
+        height: 62%;
+        margin: 0;
+        left: 0;
+        transform: unset;
+        border-radius: 0;
+    }
+
+    .container {
+        margin-top: 30px;
+        overflow: hidden;
+    }
+
+    .welcomeCard {
+        width: auto;
+    }
+
+    ul.nav.nav-pills a {
+        width: 100%;
+        margin-bottom: 5px;
+        text-align: center;
+        background: #fff;
+    }
+
+    ul.nav.nav-pills li {
+        width: 100%;
+    }
+
+    .row.section {
+    }
+
+        .row.section form {
+            background: #ffff;
+            padding: 15px;
+        }
+
+    img.pk-image {
+        right: 0;
+    }
+
+
+    button#studentlogin {
+        width: 100%;
+    }
+
+ 
+
+
+    .rectangle-image-2 {
+        top: 0;
+        top: -60px;
+        height: 125%;
+    }
+
+    .welcomeCard-2 {
+        width: 100%;
+    }
+
+    .loginright-sec {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+
+    .row-section {
+        border-radius: 10px;
+        border: 1px solid #E6E6E6;
+        background-color: #FFFFFF;
+        padding: 15px;
+    }
+    .navbar-image-row {
+        text-align: center;
+    }
+}

@@ -1,0 +1,230 @@
+﻿@{
+    ViewData["Title"] = "Enrollments";
+}
+
+<style>
+    .nav-tabs .nav-item .nav-link {
+        border: none;
+    }
+    
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+        border-bottom: 3px solid #DB4B73;
+    }
+</style>
+
+<div class="row p-5">
+    <ul class="nav nav-tabs" id="myTabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="lms-tab" data-toggle="tab" href="#lms">LMS</a>
+        </li>
+    </ul>
+    <div class="tab-content mt-2">
+        <div class="tab-pane fade show active" id="lms">
+            <div class="row gy-2 gx-2 align-items-center mt-2 mb-2">
+                <div class="col-lg-1 col-md-4 col-sm-4 col-form-label">
+                    <i class="mdi mdi-filter text-danger"></i> <label class="text-danger">Filter By :</label>
+                </div>
+                <label class="col-lg-1 col-md-4 col-sm-4 col-form-label">Subject</label>
+                <div class="col-lg-3 col-md-4 col-sm-4">
+                    <select aria-required="true" class="form-select">
+                        <option disabled="" label="Select a subject" selected="" value=""></option>
+                    </select>
+                    <span class="invalid"></span>
+                </div>
+                <label class="col-lg-1 col-md-4 col-sm-4 col-form-label">Class</label>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <select aria-required="true" class="form-select">
+                        <option disabled="" label="Select a class" selected="" value=""></option>
+                    </select>
+                    <span class="invalid"></span>
+                </div>
+                <div class="col-lg-2 col-md-12 col-sm-12 text-end">
+                    <button type="submit" value="Search" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here, to search records" class="btn btn-danger btn-sm rounded-pill text-white">
+                        <span class="mdi mdi-account-search"></span> Search
+                    </button>
+                </div>
+            </div>
+            <h5>Hindi</h5>
+            <div class="d-flex bd-highlight">
+                <div class="p-2 flex-fill bd-highlight">
+                    <div class="row">
+                        <div class="col">
+                            <div>
+                                <img src="~/images/book.png" height="100px" width="150px" alt="Image could not be loaded">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div><h6>Chapter 1</h6>
+                                <p>Chapter Description</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-2 flex-fill bd-highlight">
+                    <div class="row">
+                        <div class="col">
+                            <div>
+                                <img src="~/images/book.png" height="100px" width="150px" alt="Image could not be loaded">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div><h6>Chapter 1</h6>
+                                <p>Chapter Description</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-2 flex-fill bd-highlight">
+                    <div class="row">
+                        <div class="col">
+                            <div>
+                                <img src="~/images/book.png" height="100px" width="150px" alt="Image could not be loaded">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div><h6>Chapter 1</h6>
+                                <p>Chapter Description</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex bd-highlight">
+                <div class="p-2 flex-fill bd-highlight">
+                    <div class="row">
+                        <div class="col">
+                            <div>
+                                <img src="~/images/book.png" height="100px" width="150px" alt="Image could not be loaded">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div><h6>Chapter 1</h6>
+                                <p>Chapter Description</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-2 flex-fill bd-highlight">
+                    <div class="row">
+                        <div class="col">
+                            <div>
+                                <img src="~/images/book.png" height="100px" width="150px" alt="Image could not be loaded">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div><h6>Chapter 1</h6>
+                                <p>Chapter Description</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-2 flex-fill bd-highlight">
+                    <div class="row">
+                        <div class="col">
+                            <div>
+                                <img src="~/images/book.png" height="100px" width="150px" alt="Image could not be loaded">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div><h6>Chapter 1</h6>
+                                <p>Chapter Description</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <h5>English</h5>
+                <div class="d-flex bd-highlight">
+                    <div class="p-2 flex-fill bd-highlight">
+                        <div class="row">
+                            <div class="col">
+                                <div>
+                                    <img src="~/images/book.png" height="100px" width="150px" alt="Image could not be loaded">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div><h6>Chapter 1</h6>
+                                    <p>Chapter Description</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-2 flex-fill bd-highlight">
+                        <div class="row">
+                            <div class="col">
+                                <div>
+                                    <img src="~/images/book.png" height="100px" width="150px" alt="Image could not be loaded">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div><h6>Chapter 1</h6>
+                                    <p>Chapter Description</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-2 flex-fill bd-highlight">
+                        <div class="row">
+                            <div class="col">
+                                <div>
+                                    <img src="~/images/book.png" height="100px" width="150px" alt="Image could not be loaded">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div><h6>Chapter 1</h6>
+                                    <p>Chapter Description</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex bd-highlight">
+                    <div class="p-2 flex-fill bd-highlight">
+                        <div class="row">
+                            <div class="col">
+                                <div>
+                                    <img src="~/images/book.png" height="100px" width="150px" alt="Image could not be loaded">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div><h6>Chapter 1</h6>
+                                    <p>Chapter Description</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-2 flex-fill bd-highlight">
+                        <div class="row">
+                            <div class="col">
+                                <div>
+                                    <img src="~/images/book.png" height="100px" width="150px" alt="Image could not be loaded">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div><h6>Chapter 1</h6>
+                                    <p>Chapter Description</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-2 flex-fill bd-highlight">
+                        <div class="row">
+                            <div class="col">
+                                <div>
+                                    <img src="~/images/book.png" height="100px" width="150px" alt="Image could not be loaded">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div><h6>Chapter 1</h6>
+                                    <p>Chapter Description</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

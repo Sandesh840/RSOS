@@ -1,0 +1,61 @@
+﻿@model RSOS.Controllers.ExamData
+
+@{
+    ViewData["Title"] = "Data Capture";
+    Layout = null;
+}
+<script src="~/lib/jquery 3.6.4/dist/jquery.min.js"></script>
+<script src="~/lib/toastr/build/toastr.min.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="~/lib/toastr/build/toastr.min.css">
+<link href="~/css/outer-style.css" rel="stylesheet" />
+ 
+@* <nav class="navbar navbar-light p-0">
+    <div class="container-fluid p-0 header-container">
+        <div class="pk-hd-l">
+            <img src="~/images/navbar.png" alt="logo" class="logo">
+            <img src="~/images/rsos-logo.png" class="rsos-logo" />
+            <img src="~/images/education.png" class="education-logo" />
+            <img src="~/images/government.png" class="government-logo" />
+        </div>
+    </div>
+</nav> *@
+
+<nav class="navbar navbar-light p-0">
+    <div class="container-fluid p-0 header-container">
+        <div class="pk-hd-l">
+            <img src="~/images/navbar.png" alt="logo" class="logo">
+            <img src="~/images/education.png" class="education-logo" />
+            <img src="~/images/rsos-logo.png" class="rsos-logo" />
+            @* <img src="~/images/government.png" class="government-logo" /> *@
+        </div>
+        <a class="pk-hd-2" asp-controller="DataCapture" asp-action="Logout">Logout</a>
+    </div>
+
+</nav>
+
+
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-lg-12 mt-4">
+            @if (ViewBag.ExamStatus == 1)
+            {
+                <h1 class="text-success text-center">उत्तर सफलतापूर्वक सबमिट किया गया.</h1>
+                <h2 class="text-info text-center"><a asp-controller="DataCapture" asp-action="Index">विषय सूची पर जाएं </a></h2>
+            }
+            else if (ViewBag.ExamStatus == 2)
+            {
+                <h1 class="text-danger text-center">आप यह परीक्षा पहले ही दे चुके हैं.</h1>
+                <h2 class="text-info text-center"><a asp-controller="DataCapture" asp-action="Index">विषय सूची पर जाएं</a></h2>
+            }
+            else
+            {
+                <h1 class="text-danger text-center">Something Went Wrong</h1>
+                <h2 class="text-info text-center">Go to login? <a asp-controller="Home" asp-action="Login">Login</a></h2>
+            }
+        </div>
+    </div>
+</div>

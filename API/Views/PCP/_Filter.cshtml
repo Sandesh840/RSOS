@@ -1,0 +1,38 @@
+﻿<div class="card filter-section">
+    <div class="card-body">
+        <form data-ajax="true" data-ajax-method="GET" data-ajax-update="#div-class-questions-list" data-ajax-mode="replace" asp-action="GetClassQuestions" asp-controller="PCP">
+            <div class="row gy-2 gx-2 align-items-center">
+                <div class="col-lg-1 col-md-4 col-sm-4 col-form-label">
+                    <i class="fa-solid fa-filter me-2"></i> <label class="text-dark">Filter By:</label>
+                </div>
+                <label class="col-lg-2 col-md-4 col-sm-4 col-form-label">Class</label>
+                <div class="col-lg-2 col-md-4 col-sm-4 me-4">
+                    <select name="classId" aria-required="true" class="form-select" required>
+                        <option disabled="" label="Select a Class" selected="" value=""></option>
+                        <option label="10" value="10">10</option>
+                        <option label="12" value="12">12</option>
+                    </select>
+                </div>
+                <label class="col-lg-2 col-md-4 col-sm-4 col-form-label">Paper Type</label>
+                <div class="col-lg-2 col-md-4 col-sm-4">
+                    <select name="type" aria-required="true" class="form-select" required>
+                        <option disabled="" label="Select a Paper Type" selected="" value=""></option>
+                        <option value="1">Practice Paper</option>
+                        <option value="2">ePCP Paper</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-12 col-sm-12 text-end">
+                    <button type="submit" value="Search" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here, to search records" class="btn btn-sm text-white rounded-pill" style="background-color: #DB4B73">
+                        <i class="fa-solid fa-magnifying-glass"></i> Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function viewUploadQuestions(){
+        $("#upload-questions").modal("show");
+    }
+</script>

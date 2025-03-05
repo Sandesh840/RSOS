@@ -1,0 +1,39 @@
+﻿<style>
+    .line {
+        stroke: #97144d;
+        stroke-width: 4;
+    }
+    
+    .loader {
+        top: 0;
+        left: 0;
+        position: fixed;
+        opacity: 0.8;
+        z-index: 10000000;
+        background: #7f8389;
+        height: 100%;
+        width: 100%;
+        margin: auto;
+    }
+    
+    #container svg {
+        padding-top: 15%;
+        margin: 0 42%;
+    }
+</style>
+
+<div class="loader" id="ajax-loader" style="display:none;">   
+    <div id="container">
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>
+            <circle fill='#DD5471' stroke='#DD5471' stroke-width='2' r='15' cx='40' cy='65'>
+                <animate attributeName='cy' calcMode='spline' dur='2' values='65;135;65;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate>
+            </circle>
+            <circle fill='#DD5471' stroke='#DD5471' stroke-width='2' r='15' cx='100' cy='65'>
+                <animate attributeName='cy' calcMode='spline' dur='2' values='65;135;65;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate>
+            </circle>
+            <circle fill='#DD5471' stroke='#DD5471' stroke-width='2' r='15' cx='160' cy='65'>
+                <animate attributeName='cy' calcMode='spline' dur='2' values='65;135;65;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate>
+            </circle>
+        </svg>
+    </div>
+</div>

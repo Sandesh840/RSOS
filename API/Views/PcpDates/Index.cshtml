@@ -1,0 +1,16 @@
+﻿@using Application.DTOs.PcpDate
+@model List<Application.DTOs.PcpDate.PcpDatesResponseDTO>
+
+@{
+    ViewData["Title"] = "ePCP Dates";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row p-4">
+    <div id="pcpDates-list">
+        @{
+            await Html.RenderPartialAsync("_pcpDatesList", Model);
+        }
+    </div>
+    <partial name="_AddNewPcpDates" model="new PcpDatesRequestDTO()" />
+</div>

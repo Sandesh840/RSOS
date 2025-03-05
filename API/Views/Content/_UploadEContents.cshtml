@@ -1,0 +1,92 @@
+﻿@model Application.DTOs.Content.Contents
+
+<form data-ajax="true" data-ajax-mode="replace" data-ajax-method="POST" enctype="multipart/form-data" asp-action="UploadContent" data-ajax-success="onSuccess" autocomplete="off">
+    <div id="upload-content" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="info-header-modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #DB4B73">
+                    <h4 class="modal-title text-white">Upload Content</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <input type="hidden" asp-for="Id" class="form-control" />
+                        <input type="hidden" asp-for="SubjectId" class="form-control" />
+                        <input type="hidden" asp-for="ContentType" class="form-control" />
+                        <div class="col-md-3">
+                            <label class="form-label required">Subject</label>
+                            <input asp-for="SubjectName" class="form-control" readonly="readonly"/>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label required">Class</label>
+                            <input asp-for="Class" class="form-control" readonly="readonly"/>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label required">Faculty</label>
+                            <input type="text" asp-for="Faculty" class="form-control" required minlength="3" maxlength="60">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label required">Chapter Name</label>
+                            <input type="text" asp-for="ChapterName" class="form-control" required minlength="3" maxlength="60">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label required">Chapter No</label>
+                            @if (Model.Id == 0)
+                            {
+                                <input type="number" asp-for="ChapterNo" class="form-control" required min="1" max="50">
+                            }
+                            else
+                            {
+                                <input type="number" asp-for="ChapterNo" class="form-control" required readonly="readonly">
+                            }
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label required">Part No</label>
+                            @if (Model.Id == 0)
+                            {
+                                <input type="number" asp-for="PartNo" class="form-control" required min="1" max="50">
+                            } 
+                            else
+                            {
+                                <input type="number" asp-for="PartNo" class="form-control" required readonly="readonly">
+                            }
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label required">Part Name</label>
+                            <input type="text" asp-for="PartName" class="form-control" minlength="1" maxlength="60" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label required">Time (In Second)</label>
+                            <input type="number" asp-for="TimeInSeconds" class="form-control" required min="1" max="10000">
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <label class="form-label required">YouTube Link</label>
+                            <input type="text" asp-for="YouTubeLink" class="form-control" required minlength="5" maxlength="200">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-4 text-md-end">
+                        <button type="submit" class="btn text-white mt-2" style="background-color: #DB4B73" value="Save">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    function onSuccess(data) {
+        if (data.isSuccess === 0) {
+            toastr.warning(data.message);
+        }
+        else {
+            toastr.success(data.message);
+            $("#filter-content").trigger('click');
+            $("#upload-content").modal("hide");
+            BasicDatatable();
+        }
+    }
+</script>

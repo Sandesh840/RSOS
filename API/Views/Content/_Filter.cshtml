@@ -1,0 +1,78 @@
+﻿@model Application.DTOs.Content.EContentRequestDTO
+
+<div class="card filter-section">
+    <div class="card-body">
+        <form data-ajax="true" data-ajax-method="GET" data-ajax-update="#div-class-contents-list" data-ajax-mode="replace" asp-action="GetContentList" asp-controller="Content" data-ajax-success="onChangeContents">
+            <div class="row gy-2 gx-2 align-items-center">
+                <div class="col-lg-1 col-md-4 col-sm-4 col-form-label">
+                    <i class="fa-solid fa-filter me-2"></i> <label class="text-dark">Filter By:</label>
+                </div>
+                <label class="col-lg-2 col-md-4 col-sm-4 col-form-label required">Class</label>
+                <div class="col-lg-2 col-md-4 col-sm-4 me-4">
+                    <select asp-for="ClassId" aria-required="true" class="form-select" required onchange="bindSubjects()">
+                        <option disabled="" label="Select a Class" selected="" value=""></option>
+                        <option label="10" value="10">10</option>
+                        <option label="12" value="12">12</option>
+                    </select>
+                </div>
+                <label class="col-lg-2 col-md-4 col-sm-4 col-form-label required">Subject</label>
+                <div class="col-lg-3 col-md-4 col-sm-4">
+                    <select asp-for="SubjectId" asp-items="@(new SelectList(string.Empty,"Id","Value"))" class="form-select" data-bs-drop="down" data-bs-display="static" required>
+                        <option value="0" selected>Select a Subject</option>
+                    </select>
+                </div>
+                <div class="col-lg-1 col-md-4 col-sm-4"></div>
+                <div class="col-lg-1 col-md-4 col-sm-4"></div>
+                <label class="col-lg-2 col-md-4 col-sm-4 col-form-label required">Content Type</label>
+                <div class="col-lg-2 col-md-4 col-sm-4">
+                    <select asp-for="ContentType" class="form-select" data-bs-drop="down" data-bs-display="static" required>
+                        <option value="" selected disabled="">Select a Content Type</option>
+                        <option value="1">E-Content</option>
+                        <option value="2">Practice Paper</option>
+                    </select>
+                </div>
+                <div class="col-2 ms-4 required">Status</div>
+                <div class="col-lg-2 col-md-4 col-sm-4">
+                    <select asp-for="IsActive" class="form-select" data-bs-drop="down" data-bs-display="static">
+                        <option value="true">Active</option>
+                        <option value="false">In-Active</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-12 col-sm-12 ms-4">
+                    <button type="submit" id="filter-content" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here, to search records" class="btn btn-sm text-white rounded-pill" style="background-color: #DB4B73">
+                        <i class="fa-solid fa-magnifying-glass"></i> Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function onChangeContents(data){
+        $("#div-class-contents-list").html(data);
+    }
+    
+    function bindSubjects(){
+        $.ajax({
+            type: 'GET',
+            dataType: 'JSON',
+            url: '/Content/GetSubjectsByClass/',
+            data: { classId: $('#ClassId').val() },
+            success: function (data) {
+                let items = "<option value=''>Select a Subject</option>";
+                $('#SubjectId').empty();
+
+                $.each(data, function (key, value) {
+                    items += "<option value='" + value.value + "'>" + value.text + "</option>"
+                });
+
+                $('#SubjectId').html(items);
+            },
+            error: function (response) {
+                toastr.warning('Error occurred while binding class dropdown.');
+            }
+        });
+    }
+
+</script>

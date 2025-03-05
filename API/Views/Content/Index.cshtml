@@ -1,0 +1,31 @@
+﻿@using Application.DTOs.Content
+@model Application.DTOs.Content.EContentResponseDTO
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "eContents";
+}
+
+<div class="row p-4">
+    <div class="mb-3" id="contents-filter">
+        @{
+            await Html.RenderPartialAsync("_Filter");
+        }
+    </div>
+
+    <div id="div-class-contents-list"></div>    
+</div>
+
+<div id="subject-content">
+    @{
+        await Html.RenderPartialAsync("_UploadEContents", new Contents());
+    }
+</div>
+
+<div id="div-upload-content">
+    @{
+    await Html.RenderPartialAsync("_UploadContents", new EContentUploadDTO());
+    }
+</div>
+
+<partial name="_Confirmation"/>

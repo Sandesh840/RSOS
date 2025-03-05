@@ -1,0 +1,214 @@
+﻿@model Application.DTOs.Content.EContentResponseDTO
+
+<style>
+    #basic-datatable th,
+    #basic-datatable td {
+        white-space: normal;
+        word-wrap: break-word;
+    }
+
+    #basic-datatable th:nth-child(3),
+    #basic-datatable td:nth-child(3) {
+        max-width: 150px;
+    }
+
+    #basic-datatable th:nth-child(5),
+    #basic-datatable td:nth-child(5) {
+        max-width: 300px;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-4">
+                <div class="text-start">
+                    <div class="page-title-box">
+                        <h4 class="page-title">
+                            @{
+                                var title = Model.ContentType == 1 ? "eContents" : "Practice Paper";
+                            }
+                            @title for @Model.SubjectName
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="text-end">
+                    @if (Model.ContentType == 1)
+                    {
+                        <div class="row mb-2">
+                            <div class="col">
+                                @if (Model.IsActive)
+                                {
+                                    <a type="button" class="btn w-b text-white btn-sm btn-rounded" style="background-color: #DB4B73" asp-action="DownloadContentTemplate">
+                                        Download Content Template Sheet
+                                    </a>
+                                    <button type="button" class="btn w-b text-white btn-sm btn-rounded" style="background-color: #DB4B73" onclick="getUploadedContent(@Model.SubjectId)">
+                                        Upload Content Sheet
+                                    </button>
+                                    <button type="button" class="btn w-b text-white btn-sm btn-rounded" style="background-color: #DB4B73" onclick="onAddUpdateContent(0, @Model.Class, @Model.SubjectId, @Model.ContentType)">
+                                        Add new eContent
+                                    </button>
+                                }
+                                <a type="button" class="btn w-b text-white btn-sm btn-rounded" style="background-color: #DB4B73" asp-action="DownloadSheet" asp-route-classId="@Model.Class" asp-route-activeStatus="@Model.IsActive" asp-route-contentType="@Model.ContentType" asp-route-subjectId="@Model.SubjectId">
+                                    Download Data Sheet
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <table id="basic-datatable" class="basic-datatable table table-hover dt-responsive nowrap w-100">
+            <thead>
+                <tr>
+                    <th style="width: 5%">#</th>
+                    @if (Model.ContentType == 1)
+                    {
+                        <th>Faculty</th>
+                        <th>Chapter No</th>
+                    }
+                    <th>Chapter Name</th>
+                    <th>Part No</th>
+                    <th>Part Name</th>
+                    @if (Model.ContentType == 1)
+                    {
+                        <th>YouTube Link (Time in Seconds)</th>
+                    }
+                    <th style="width: 10%">
+                        @if (Model.ContentsList.Any())
+                        {
+                            if (Model.ContentsList.Any(x => x.IsActive))
+                            {
+                                <span>Active</span>
+                            }
+                            else
+                            {
+                                <span>Deleted Time</span>
+                            }
+                        }
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var content in Model.ContentsList)
+            {
+                <tr>
+                    <td>
+                        <span>@(Model.ContentsList.ToList().IndexOf(content) + 1).</span>
+                    </td>
+                    @if (Model.ContentType == 1)
+                    {
+                        <td>@content.Faculty</td>
+                        <td>@content.ChapterNo</td>    
+                    }
+                    <td>@content.ChapterName</td>
+                    <td>@content.PartNo</td>
+                    <td>@content.PartName</td>
+                    @if (Model.ContentType == 1)
+                    {
+                        <td>@content.YouTubeLink (@content.TimeInSeconds)</td>
+                    }
+                    <td>
+                        @if (Model.ContentType == 1 && content.IsActive)
+                        {
+                            <a class="btn btn-sm btn-outline-pink btn-rounded" onclick="onAddUpdateContent(@content.Id, @Model.Class, @Model.SubjectId, @Model.ContentType)">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                        }
+                        @if (content is { IsActive: true })
+                        {
+                            if (content.IsDeletable)
+                            {
+                                <a class="btn btn-sm btn-outline-pink btn-rounded" onclick="changeContentStatus(@content.Id, @Model.Class, @Model.SubjectId, @Model.ContentType)">
+                                    <i class="fa-regular fa-circle-xmark"></i>
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            @content.UploadedDate
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function onAddUpdateContent(contentId, classId, subjectId, contentType){
+        $.ajax({
+            type: 'GET',
+            dataType: 'JSON',
+            url: '/Content/GetContentById/',
+            data: { contentId: contentId, classId : classId, subjectId : subjectId, contentType : contentType},
+            success: function (data) {
+                $("#subject-content").html(data.htmlData);
+                $("#upload-content").modal("show");
+                BasicDatatable();
+            },
+            error: function (response) {
+                toastr.warning('Error occurred while binding contents data.');
+            }
+        });
+    }
+
+    function changeContentStatus(contentId, classId, subjectId, contentType){
+        $("#contentId").val(contentId);
+        $("#classId").val(classId);
+        $("#subjectId").val(subjectId);
+        $("#contentType").val(contentType);
+        $("#info-header-modal").modal("show");
+    }
+    
+    function ActivateDeactivate(){
+        let contentId = $("#contentId").val();
+        let classId = $("#classId").val();
+        let subjectId = $("#subjectId").val();
+        let contentType = $("#contentType").val();
+        
+        $.ajax({
+            type: 'GET',
+            dataType: 'JSON',
+            url: '/Content/UpdateContentStatus/',
+            data: { contentId: contentId, classId : classId, subjectId : subjectId, contentType : contentType},
+            success: function (data) {
+                if (data.isSucess === 0){
+                    toastr.warning(data.message);
+                }
+                else {
+                    toastr.success('The status of the following content has been successfully changed.');
+                    $("#filter-content").trigger('click');
+                    BasicDatatable();
+                }
+            },
+            error: function (response) {
+                toastr.warning('Error occurred while binding contents data.');
+            }
+        });
+    }
+
+    function getUploadedContent(subjectId){
+        $.ajax({
+            type: 'GET',
+            dataType: 'JSON',
+            url: '/Content/GetUploadedContent/',
+            data: { subjectId : subjectId },
+            success: function (data) {
+                console.log(data.htmlData);
+               $("#div-upload-content").html(data.htmlData);
+               $("#upload-contents").modal('show');
+            },
+            error: function (response) {
+                toastr.warning('Error occurred while opening contents upload.');
+            }
+        });
+    }
+    
+    $(document).ready(function () {
+        BasicDatatable();
+    });
+</script>

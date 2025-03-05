@@ -1,0 +1,330 @@
+﻿@model Application.DTOs.User.UserRequestDTO
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_LoginLayout";
+
+    var logoutAlert = TempData["LogoutAlert"] == null ? "" : TempData["LogoutAlert"]!.ToString();
+    var maxDate = DateTime.Now.AddYears(-13).ToString("yyyy-MM-dd");
+    var minDate = "1950-01-01";
+}
+
+ 
+
+<partial name="_Notification" />
+
+<!-- Nav pills -->
+<ul class="nav nav-pills">
+    <li class="nav-item d-none">
+        <a class="nav-link active" data-bs-toggle="pill" href="#Student-Login">Student Login</a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link " data-bs-toggle="pill" href="#Department-Login">Department Login</a>
+    </li>
+   
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="Department-Login">
+
+        <div class="row-section">
+            <form method="post" asp-controller="Home" asp-action="Login" autocomplete="off">
+                @Html.AntiForgeryToken()
+                <h2 class="text-danger poppins-semibold">Department Login</h2>
+                <p class="poppins-regular mb-2" style="color: #4E4E4E;">Enter your username & password</p>
+                <p class="poppins-light mb-1">User Name</p>
+                <div class="input-group mb-3">
+                    <span style="background-color: #db4b73; width: 0.7vw; border-radius: 3px;"></span>
+                    <div class="form-floating position-relative">
+                        <img src="~/images/user.png" alt="" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); width: 1.7vw">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control ps-5", placeholder = "", id = "UserName", autocomplete = "off" })
+                        <label class="ms-4 ps-4">Type Here ...</label>
+                    </div>
+                </div>
+                <p class="poppins-light mb-1">Password</p>
+                @* <img src="images/people.png" alt="" class="pk-image"> *@
+                <div class="input-group mb-3">
+                    <span style="background-color: #db4b73; width: 0.7vw; border-radius: 3px;"></span>
+                    <div class="form-floating position-relative">
+                        <span>
+                            <img src="images/password.png" alt="" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); width: 1.7vw">
+                        </span>
+                        @Html.TextBoxFor(m => m.Password, new { @class = "form-control ps-5", placeholder = "", id = "Password", type = "password", autocomplete = "off" })
+                        <label class="ms-4 ps-4">Type Here ...</label>
+                    </div>
+                </div>
+                <p class="text-end m-0 p-0">
+                    <input type="checkbox" onclick="togglePassword()">
+                    Show Password
+                </p>
+                <div class="captcha-container mb-2">
+                    <img id="img-captcha" src="~/captcha-image" alt="" />
+                    <span class="refresh-btn text-white" id="refreshCaptcha">&#8635;</span>
+                </div>
+                <div class="input-group mb-3">
+                    <span style="background-color: #db4b73; width: 0.7vw; border-radius: 3px;"></span>
+                    <div class="form-floating position-relative">
+                        <img src="images/password.png" alt="" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); width: 1.7vw">
+                        @Html.TextBoxFor(m => m.Captcha, new { @class = "form-control ps-5", placeholder = "", id = "Captcha", autocomplete = "off" })
+                        <label class="ms-4 ps-4">Type Here ...</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <input asp-for="HdCp" class="form-control ps-5" id="HdCp" type="hidden" />
+                    <input asp-for="HdUserName" class="form-control ps-5" id="HdUserName" type="hidden" />
+                    <input asp-for="HdPassword" class="form-control ps-5" id="HdPassword" type="hidden" />
+                </div>
+                <div class="itemCenter">
+                    <button class="btn-block loginButtonSize" type="submit" style="background-color: #393185; color: white" id="login">
+                        Login
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="tab-pane fade d-none" id="Student-Login">
+        <div class="row-section">
+          @*   <form method="post" asp-controller="DataCapture" asp-action="Login" autocomplete="off"> *@
+            <div>
+                @Html.AntiForgeryToken()
+                <h2 class="text-danger poppins-semibold">Student Login</h2>
+                <p class="poppins-regular mb-2" style="color: #4E4E4E;">Enter your username & password</p>
+                <p class="poppins-light mb-1">SSO ID</p>
+                <div class="input-group mb-3">
+                    <span style="background-color: #db4b73; width: 0.7vw; border-radius: 3px;"></span>
+                    <div class="form-floating position-relative">
+                        <img src="~/images/user.png" alt="" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); width: 1.7vw">
+                        @Html.TextBoxFor(m => m.ExamUserName, new { @class = "form-control ps-5", placeholder = "", id = "ExamUserName", autocomplete = "off" })
+                        <label class="ms-4 ps-4">Type Here ...</label>
+                    </div>
+                </div>
+                <p class="poppins-light mb-1">Date-Of-Birth(DD-MM-YYYY)</p>
+                @* <img src="images/people.png" alt="" class="pk-image"> *@
+                <div class="input-group mb-3">
+                    <span style="background-color: #db4b73; width: 0.7vw; border-radius: 3px;"></span>
+                    <div class="form-floating position-relative">
+                        <span>
+                            <img src="images/password.png" alt="" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); width: 1.7vw">
+                        </span>
+                        @Html.TextBoxFor(m => m.ExamPassword, new { @class = "form-control ps-5", placeholder = "", id = "ExamPassword", type = "date", autocomplete = "off", max = maxDate, min = minDate, onkeydown = "return false" })
+                        <label class="ms-4 ps-4">Select DOB ...</label>
+                    </div>
+                </div>
+                @* <p class="poppins-light mb-1">Enrollemrnt No</p>
+                <div class="input-group mb-3">
+                    <span style="background-color: #db4b73; width: 0.7vw; border-radius: 3px;"></span>
+                    <div class="form-floating position-relative">
+                        <img src="~/images/password.png" alt="" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); width: 1.7vw">
+                        <select name="enrollementNo" aria-required="true" class="form-select ps-5" required>
+                            <option disabled="" label="Select" selected="" value=""></option>
+                            <option label="10" value="10">10</option>
+                            <option label="12" value="12">12</option>
+                        </select>
+                        <label class="ms-4 ps-4">Select Enrollemrnt ...</label>
+                    </div>
+                </div> *@
+                @*   <p class="text-end m-0 p-0">
+                <input type="checkbox" onclick="togglePassword()">
+                Show Password
+                </p> *@
+                <div class="mb-3 float-end fw-bold">
+                    <a class="link" href="https://rsosadmission.rajasthan.gov.in/rsos/admitcarddownloadforall"  target="_blank" style="color:red"> Admit Card डाउनलोड के लिए क्लिक करे </a>
+                </div>
+                <div class="mt-3  itemCenter">
+                    @* <button class="btn-block loginButtonSize" type="submit" style="background-color: #393185; color: white" id="studentlogin" >
+                        Login
+                    </button> *@
+
+                    <button class="btn-block loginButtonSize" type="button" style="background-color: #393185; color: white" id="studentlogin" onclick="showEnrollement()">
+                        Login
+                    </button>
+                </div>
+
+               
+
+                <div class="pk-info">
+                    किसी भी समस्या के लिए आप इस नंबर पर संपर्क कर सकते है<br />
+                    फ़ोन - 0141-2717082 एवं 7568736564 (10 AM - 5 PM)<br />
+                    ईमेल- adacdrsos@gmail.com
+                </div>
+                @*  </form> *@
+            </div>
+
+            @* <form data-ajax="true" data-ajax-mode="replace" data-ajax-method="POST" enctype="multipart/form-data" asp-controller="DataCapture" asp-action="Login" data-ajax-success="onSuccessEnrollement"> *@
+            <div id="add-Enrollement" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="info-header-modalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header modal-colored-header" style="background-color: #DB4B73">
+                                <h4 class="modal-title text-white">Select Enrollment No.</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                            </div>
+                            <div class="modal-body" style="overflow: auto">
+                                <div class="mb-3">
+                                    <label asp-for="@Model.Enrollment" class="form-label mb-2">Enrollment No</label>
+                                    <select asp-for="Enrollment" id="ddlEnrollment" aria-required="true" class="form-select" >
+                                        <option label="Select" selected="" value=""></option>
+                                    </select>
+                                </div>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="btnPopUpButton" class="btn d-w text-white" style="background-color: #DB4B73" value="Save" onclick="showEnrollement()">Go</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+          @*   </form> *@
+        </div>
+    </div>
+
+    <div class="tab-pane container fade" id="menu2"></div>
+    <div class="tab-pane container fade" id="menu2"></div>
+</div>
+@* <div class="row">
+    <div class="col-md-12 mb-3">
+        <a class="text-primary float-end" asp-controller="Home" asp-action="DownloadApkFile">Download APK</a>
+        <a class="text-primary float-end" style="margin-right:20px;" asp-controller="DataCapture" asp-action="Login"></a>
+    </div>
+</div> *@
+
+
+<!-- student section-->
+
+
+<script type="text/javascript">
+    
+    function showEnrollement() {
+        if ($('#ddlEnrollment').val() != '') { 
+            $("#btnPopUpButton").attr('disabled', 'disabled');
+        }
+        $.ajax({
+            url: '/DataCapture/LoginNew',
+            type: 'GET',
+            data: {
+                ExamUserName: $('#ExamUserName').val(),
+                ExamPassword: $('#ExamPassword').val(),
+                Enrollment: $('#ddlEnrollment').val()
+            },
+            success: function (response) {
+                if (response.isSuccess) {
+                    var IsEnroll = response.isEnroll;
+                    if (IsEnroll) { 
+                        var op = '';
+                        if (response.enrollement.length > 0) {
+                            $.each(response.enrollement, function (k, v) {
+                                op += '<option value="' + v + '">' + v + '</option>';
+                            });
+
+                            $('#ddlEnrollment').empty();
+                            $('#ddlEnrollment').append('<option value=""> Select </option>');
+
+                            $('#ddlEnrollment').append(op);
+                        }
+
+                        $("#add-Enrollement").modal("show");
+
+                    } else {
+                        // Handle case where isEnroll is false
+                        window.location.href = '/DataCapture/Index';
+                    }
+                } else {
+                    // Handle case where isSuccess is false
+                    $("#btnPopUpButton").removeAttr('disabled');
+                    console.error("Request not successful.");
+                }
+            },
+            error: function (xhr, status, error) {
+                $("#btnPopUpButton").removeAttr('disabled');
+                console.error("AJAX request error:", error);
+            }
+        });
+    }
+
+
+    function togglePassword() {
+        let passwordField = document.getElementById("Password");
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+        } else {
+            passwordField.type = "password";
+        }
+
+        let passwordFieldStudent = document.getElementById("ExamPassword");
+        if (passwordFieldStudent.type === "password") {
+            passwordFieldStudent.type = "text";
+        } else {
+            passwordFieldStudent.type = "password";
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        /*--------------------department login----------------------------------------*/
+        let loginButton = document.getElementById('login');
+
+        loginButton.addEventListener('click', function (event) {
+            let txtUserName = $('#UserName').val();
+            let txtPassword = $('#Password').val();
+
+            let salt = Date.now().toString(36) + Math.random().toString(36).substr(2);
+
+            $('#HdCp').val(salt);
+
+            if (txtUserName === '' || txtPassword === '') {
+                return;
+            }
+
+            let key = CryptoJS.enc.Utf8.parse('8080808080808080');
+            let iv = CryptoJS.enc.Utf8.parse('8080808080808080');
+
+            let encryptedLogin = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(txtUserName), key,
+                {
+                    keySize: 128 / 8,
+                    iv: iv,
+                    mode: CryptoJS.mode.CBC,
+                    padding: CryptoJS.pad.Pkcs7
+                });
+
+            $('#HdUserName').val(encryptedLogin);
+            $('#UserName').val("********************");
+
+            let encryptedPassword = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(txtPassword + salt), key,
+                {
+                    keySize: 128 / 8,
+                    iv: iv,
+                    mode: CryptoJS.mode.CBC,
+                    padding: CryptoJS.pad.Pkcs7
+                });
+
+            $('#HdPassword').val(encryptedPassword);
+            $('#Password').val("********************");
+        });
+
+       
+
+        if ('@logoutAlert' !== '') {
+            $("#logout-alert-modal").modal("show");
+        }
+
+        $('#refreshCaptcha').on('click', function () {
+            let date = new Date();
+            $("#img-captcha").attr("src", "/get-captcha-image?" + date.getTime());
+        });
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var dateInput = document.getElementById('ExamPassword');
+            dateInput.addEventListener('keydown', function (event) {
+                event.preventDefault();
+            });
+        });
+
+    });
+
+    
+
+</script>
+
+ 

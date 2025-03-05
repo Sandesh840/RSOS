@@ -1,0 +1,35 @@
+﻿<div id="alert-logout-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static" style="z-index: 2050;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-colored-header" style="background-color: #DB4B73">
+                <h4 class="modal-title text-white">Session Expiry</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-1">
+                    <div class="col-1">
+                        <div class="row">
+                            <label class="form-label"><b>Note:</b></label>
+                        </div>
+                    </div>
+                    <div class="col-11">
+                        <div class="row">
+                            <span id="remarks" class="ms-2 text-dark" style="text-align: justify">
+                                Your idle time has exceeded 15 minutes and your session shall expire in less than 5 minutes. 
+                                You can click on cancel and resume your work preventing any loss of data due to session expiry or you can also log out.
+                                However you will be logged out automatically after the session expires.
+                                Your session will expire in <span id="countdown" class="text-dark" style="color: #DB4B73">1:00</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal">Cancel</button> 
+                <a asp-controller="Home" asp-action="Logout" class="btn btn-sm d-w text-white" style="background-color: #DB4B73" >
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

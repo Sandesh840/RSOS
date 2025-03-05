@@ -1,0 +1,47 @@
+﻿@if (TempData["Success"] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/toastr/build/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.success('@TempData["Success"]');
+        toastr.options = {
+            "closeButton": true
+        };
+    </script>
+}
+
+@if (TempData["Info"] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/toastr/build/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.info('@TempData["Info"]');
+        toastr.options = {
+            "closeButton": true
+        };
+    </script>
+}
+
+@if (TempData["Error"] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/toastr/build/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.error('@TempData["Error"]');
+        toastr.options = {
+            "closeButton": true
+        };
+    </script>
+}
+
+@if (TempData["Warning"] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/toastr/build/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.warning('@TempData["Warning"]');
+        toastr.options = {
+            "closeButton": true
+        };
+    </script>
+}

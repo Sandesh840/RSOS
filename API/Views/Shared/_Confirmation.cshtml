@@ -1,0 +1,22 @@
+﻿<div id="info-header-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="info-header-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-colored-header" style="background-color: #DB4B73">
+                <h4 class="modal-title text-white">Confirmation</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <input id="contentId" type="hidden"/>
+                <input id="classId" type="hidden"/>
+                <input id="subjectId" type="hidden"/>
+                <input id="contentType" type="hidden"/>
+                <input id="ebookId" type="hidden"/>
+                Are you sure you want to change the activation status for the following record?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">No</button>
+                <button type="button" onclick="ActivateDeactivate()" class="btn-confirm btn btn-sm text-white" style="background-color: #DB4B73" data-bs-dismiss="modal">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>

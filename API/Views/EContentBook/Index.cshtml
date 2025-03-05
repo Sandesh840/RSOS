@@ -1,0 +1,24 @@
+﻿@using Application.DTOs.EContentBooks
+
+@{
+    ViewData["Title"] = "eBooks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row p-4">
+    <div class="mb-3" id="questions-filter"> 
+        @{
+            await Html.RenderPartialAsync("_Filter");
+        }
+    </div>
+    
+    <div id="div-ebook-list"></div>
+
+    <div id="upload-questions-view"> 
+        @{
+            await Html.RenderPartialAsync("_AddUpdateEBook", new EContentBookRequestDTO());
+        }
+    </div>
+</div>
+
+<partial name="_Confirmation"/>

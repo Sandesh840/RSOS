@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - RSOS</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/API.styles.css" asp-append-version="true" />
+    <link href="~/lib/bootstrap-5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="~/lib/jquery 3.6.4/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap-5.3.2/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="~/lib/toastr/build/toastr.min.css">
+    <script src="~/js/aes.js"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <link href="~/css/login.css" rel="stylesheet" />
+</head>
+<body class="login_page-dg">
+    <div class="container  login_container">
+        <div class="row mx-auto">
+            <div class="col-md-6">
+                <div class="loginleft-sec">
+                    <div class="rectangle-image-2"></div>
+                    <div class="login_header">
+                        <div class="navbar-image-row">
+                            <div class="navbar-image-col">
+                                <div class="navbar-image">
+                                    <img src="~/images/rsos-logo.png" class="education-logo" />
+                                    <img src="~/images/education.png" class="rsos-logo" />
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*<div style="justify-content: center; align-items: center; text-align: center;">
+                    <img src="~/images/education.png" class="education-logo" />
+                    <img src="~/images/rsos-logo.png" class="rsos-logo" />
+                    <img src="images/government.png" style="position: absolute; margin-left: 2vw;" alt="">
+                    <img src="images/logo.png" style="width: 8vw; margin-top: 12vw;" alt="" />
+                    </div> *@
+
+
+
+                    @*                         <div class="welcomeCard" style="border-radius: 1rem"> *@
+
+                    <div class="welcomeCard-row">
+                        <img src="images/logo.png" class="logo-pic" alt="" />
+                        <div class="welcomeCard-2">
+                            <p class="welcomeTitle-p">Welcome to  </p>
+                            <h5 style="color: #393185">  Rajasthan State Open School   </h5>
+                            <h4 style="color: #db4b73" class="mb-3">Student App</h4>
+                            <p>आपका स्वागत है</p>
+                            <h5 style="color: #393185">  राजस्थान स्टेट ओपन स्कूल   </h5>
+                            <h4 style="color: #db4b73">स्टूडेंट ऐप</h4>
+                            <div class="info-wel">
+                                प्रिय अभियर्थी, RSOS मोबाइल एप एवं यह पेज दोनों से ही ई-पीसीपी किया जा सकता है, आपके सत्रांक के अंक ई-पीसीपी पूरा करने के बाद ही शामिल होंगे। आपके सुविधा अनुसार आप दोनों मे से कही से भी ई-पीसीपी कर सकते है।
+                            </div>
+                        </div>
+                        <div class="ellipse-container">
+                            <div class="ellipseOne"></div>
+                            <div class="ellipseTwo"></div>
+                            <div class="ellipseThree"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="loginright-sec">
+                    @RenderBody()
+                </div>
+            </div>
+            <partial name="_LogoutAlert" />
+        </div>
+    </div>
+    <script src="~/lib/toastr/build/toastr.min.js"></script>
+    <script src="~/lib/jquery.unobtrusive-ajax.min.js_3.2.6/cdnjs/jquery.unobtrusive-ajax.min.js"></script>
+</body>
+</html>

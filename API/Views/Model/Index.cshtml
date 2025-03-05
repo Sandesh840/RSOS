@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Database Models";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row p-4">
+    <div class="mb-3" id="questions-filter">
+        <div class="card filter-section">
+            <div class="card-body">
+                <form method="post" asp-action="ExportData" asp-controller="Model">
+                    <div class="row gy-2 gx-2 align-items-center">
+                        <div class="col-lg-1 col-md-4 col-sm-4 col-form-label">
+                            <i class="fa-solid fa-filter me-2"></i> <label class="text-dark">Filter By:</label>
+                        </div>
+                        <label class="col-lg-2 col-md-4 col-sm-4 col-form-label">Table</label>
+                        <div class="col-lg-2 col-md-4 col-sm-4 me-4">
+                            <select name="model" asp-items="@ViewBag.ddlModels" aria-required="true" class="form-select" required>
+                                <option disabled="" label="Select a Model" selected="" value=""></option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-12 col-sm-12 text-end">
+                            <button type="submit" value="Search" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here, to export the records" class="btn btn-sm text-white rounded-pill px-4" style="background-color: #DB4B73">
+                                <i class="fa-solid fa-download"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

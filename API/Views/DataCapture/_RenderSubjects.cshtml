@@ -1,0 +1,48 @@
+﻿@* @model IEnumerable<Data.tblSubject> *@
+@using System.Data
+@model DataTable
+
+<div class="card">
+    <div class="card-body DataCapture-rwo">
+<div class="table-responsive">
+    <table class="basic-datatable table table-hover dt-responsive nowrap w-100 no-footer dtr-inline dataTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                        <th>विषय कोड</th>
+                        <th>विषय</th>
+                      @*   <th>अधिकतम अंक</th> *@
+                        <th>परीक्षा का प्रयास किया गया था</th>
+                        <th>दिनाँक जिस दिन परीक्षा दी गई</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 1;
+                foreach (DataRow data in Model.Rows)
+                {
+                <tr>
+                    <th>@i</th>
+                    <th>@data["SubjectCode"]</th>
+                    
+                        @if (data["CreatedOn"] != null && data["CreatedOn"].ToString() != "")
+                        {
+                            <td>@data["Subject"]</td>
+                            // <td>@data["MaximumMarks"]</td>
+                            <td class="text-success fw-bold">Yes</td>
+                        }else{
+                            <td>
+                                <a class="hiper-link" onclick="GetQuestions(@data["Id"],'@data["Subject"]')">@data["Subject"]</a>
+                            </td>
+                            // <td>@data["MaximumMarks"]</td>
+                            <td class="text-danger fw-bold">No</td>
+                        }
+                    
+                    <td>@data["CreatedOn"]</td>
+                </tr>
+           i++; }}
+        </tbody>
+    </table>
+</div>
+</div>
+</div>

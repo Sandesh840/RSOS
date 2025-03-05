@@ -1,0 +1,55 @@
+﻿@model Application.DTOs.Content.EContentUploadDTO
+
+<form data-ajax="true" data-ajax-mode="replace" data-ajax-method="POST" enctype="multipart/form-data" asp-action="UploadContentSheet" data-ajax-success="onSuccess">
+    <div id="upload-contents" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="info-header-modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #DB4B73">
+                    <h4 class="modal-title text-white">Upload Contents</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label required">Class</label>
+                            <input type="text" asp-for="ClassId" class="form-control" readonly="readonly">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label required">Code</label>
+                            <input type="text" asp-for="SubjectCode" class="form-control" readonly="readonly">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label required">Subject</label>
+                            <input type="text" asp-for="Subject" class="form-control" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <label class="form-label required">Select a File</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="file" asp-for="Contents" class="form-control" required="required" accept=".xlsx, .xls">
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <button type="submit" class="btn text-white mt-2" style="background-color: #DB4B73" value="Save">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    function onSuccess(data){
+        if (data.valid === 0){
+            $("#Contents").val(null);
+            toastr.warning(data.message);
+        }
+        else {
+            toastr.success(data.message);
+            $("#filter-content").trigger('click');
+            $("#upload-contents").modal("hide");
+        }
+    }
+</script>

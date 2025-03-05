@@ -1,0 +1,158 @@
+﻿@model List<Application.DTOs.PcpDate.PcpDatesResponseDTO>
+
+<style>
+    #basic-datatable th,
+    #basic-datatable td {
+        white-space: normal;
+        word-wrap: break-word;
+    }
+
+        #basic-datatable th:nth-child(2),
+        #basic-datatable td:nth-child(2) {
+            max-width: 150px;
+        }
+
+        #basic-datatable th:nth-child(3),
+        #basic-datatable td:nth-child(3) {
+            max-width: 300px;
+        }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-6">
+                <div class="text-start">
+                    <div class="page-title-box">
+                        <h4 class="page-title">ePCP Dates</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-end">
+                    <button type="button" class="btn w-b btn-outline-pink btn-sm btn-rounded" style="border: #DB4B73 1px solid;" onclick="onAddPcpDates(0)">
+                        Add New PCP Dates
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-hover dt-responsive nowrap w-100">
+            <thead>
+                <tr>
+                    <th style="width:5%">#</th>
+                    <th style="width:30%">Start Date</th>
+                    <th style="width:30%">End Date</th>
+                    <th style="width:15%">Created On</th>
+                    <th style="width:15%">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var pcpDates in Model)
+                    {
+                        if (pcpDates.IsActive)
+                        {
+                            <tr>
+                                <td>
+                                    <span>@(Model.ToList().IndexOf(pcpDates) + 1).</span>
+                                </td>
+                                <td>
+                                    @Html.Raw(pcpDates.StartDate.ToString("dd-MM-yyyy h:mm:ss tt"))
+                                </td>
+                                <td>
+                                    @Html.Raw(pcpDates.EndDate.ToString("dd-MM-yyyy h:mm:ss tt"))
+                                </td>
+                                <td>
+                                    @pcpDates.CreatedOn.ToString("dd-MM-yyyy h:mm:ss tt")
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-outline-pink btn-rounded" onclick="changePcpDatesStatus(@pcpDates.Id)">
+                                        <i class="fa-regular fa-circle-xmark"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td class="text-danger">
+                                    <span>@(Model.ToList().IndexOf(pcpDates) + 1).</span>
+                                </td>
+                                <td class="text-danger">
+                                    @Html.Raw(pcpDates.StartDate.ToString("dd-MM-yyyy h:mm:ss tt"))
+                                </td>
+                                <td class="text-danger">
+                                    @Html.Raw(pcpDates.EndDate.ToString("dd-MM-yyyy h:mm:ss tt"))
+                                </td>
+                                <td class="text-danger">
+                                    @pcpDates.CreatedOn.ToString("dd-MM-yyyy h:mm:ss tt")
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-outline-pink btn-rounded" onclick="changePcpDatesStatus(@pcpDates.Id)">
+                                        <i class="fa-solid fa-check-double"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function onAddPcpDates(index) {
+        if (index === 0) {
+            $('#Id').val('');
+            $('#pcpDates-startDate').val('');
+            $('#pcpDates-endDate').val('');
+            
+            let today = new Date().toISOString().slice(0, 16);
+            $('#pcpDates-startDate').attr('min', today);
+            
+            $('#add-pcpDates').modal('show');
+        }
+    }
+
+    toastr.options = {
+        "closeButton": true
+    };
+
+    function onSuccessPcpDate(data) {
+        if (data.errorType === 1) {
+            toastr.warning("Please insert all the required fields.");
+        }
+
+        if (data.action === 1) {
+            toastr.success("PCP Dates successfully updated.");
+        }
+        else {
+            toastr.success("PCP Dates successfully saved.");
+        }
+        
+        $('#add-pcpDates').modal('hide');
+        $('#pcpDates-list').html(data.htmlData);
+    }
+    
+    function changePcpDatesStatus(index) {
+        $.ajax({
+            type: 'POST',
+            url: '/PcpDates/UpdatePcpDatesStatus/',
+            data: { pcpDatesId : index },
+            contentType: 'application/x-www-form-urlencoded',
+            dataType: "JSON",
+            success: function(result) {
+                toastr.success(result.data);
+                $('#pcpDates-list').html(result.htmlData);
+            },
+            error: function(xhr, status, error) {           
+                let errorMessage = eval("(" + xhr.responseText + ")");
+                toastr.warning(errorMessage);
+            }
+        });
+    }
+</script>

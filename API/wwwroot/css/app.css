@@ -1,0 +1,201 @@
+@font-face {
+    font-family: 'Poppins-Regular';
+    src: url("../lib/font/Poppins-Regular.ttf") format("truetype");
+}
+
+*{
+    font-family: "Poppins-Regular", sans-serif;
+}
+
+.primary-color{
+    color: #DB4B73;
+}
+
+.btn-outline-pink {
+    --bs-btn-color: #fff;
+    --bs-btn-border-color: #DB4B73;
+    --bs-btn-bg: #DB4B73; 
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #ff5e8a;
+    --bs-btn-hover-border-color: #ff5e8a; 
+    --bs-btn-focus-shadow-rgb: 220, 53, 69;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #DB4B73;
+    --bs-btn-active-border-color: #DB4B73;
+    --bs-btn-active-shadow: #DB4B73;
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #DB4B73;
+    --bs-gradient: none;
+}
+
+.btn-outline-pink {
+    color: var(--bs-btn-color);
+    background-color: var(--bs-btn-bg);
+    border-color: var(--bs-btn-border-color);
+}
+
+.btn-outline-pink:hover {
+    color: var(--bs-btn-hover-color);
+    background-color: var(--bs-btn-hover-bg);
+    border-color: var(--bs-btn-hover-border-color);
+}
+
+.secondary-color{
+    color: #EB2F34;
+}
+
+.ternary-color{
+    color: #DB4B73
+}
+
+.button-color{
+    color: #393185;
+}
+
+.poppins-light {
+    font-family: "Poppins-Regular", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.poppins-light-italic {
+    font-family: "Poppins-Regular", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+}
+
+.poppins-regular {
+    font-family: "Poppins-Regular", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.poppins-regular-italic {
+    font-family: "Poppins-Regular", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.poppins-medium {
+    font-family: "Poppins-Regular", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.poppins-medium-italic {
+    font-family: "Poppins-Regular", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.poppins-semibold {
+    font-family: "Poppins-Regular", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.poppins-semibold-italic {
+    font-family: "Poppins-Regular", sans-serif;
+    font-weight: 600;
+}
+
+.html{
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    margin-top: 15vh;
+    height: auto;
+}
+
+.loginButtonSize{
+    width: 350px;
+    height: 60px;
+    top: 749px;
+    left: 796px;
+    border-radius: 10px;
+}
+
+.itemCenter{
+    text-align: center;
+}
+
+.rectangle-image {
+    width: 1100px;
+    height: 850px;
+    position: absolute;
+    border-radius: 110px;
+    background-color: #DB4B73;
+    transform: rotate(48deg);
+    margin-left: -750px;
+    margin-top: -500px;
+    z-index: -1;
+    opacity: 40%;
+}
+
+.ellipse-container{
+    display: flex;
+    flex-direction: row;
+    gap: 1vw;
+    margin-left: 130px;
+}
+
+.ellipseOne {
+    width: 20px;
+    height: 20px;
+    background-color: black;
+    border-radius: 50%;
+
+}
+
+.ellipseTwo {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+.ellipseThree {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+.welcomeCard{
+    width: 400px;
+    height: 241px;
+    top: 585px;
+    left: 150px;
+    border-radius: 10px;
+    border: 1px solid #E6E6E6;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    display: flex;
+}
+
+.welcomeTitle{
+    width: 400px;
+    height: 50px;
+    left: 150px;
+    color: #4E4E4E;
+    text-align: center;
+}
+
+.poppinforCard{
+    font-family: Poppins-Regular;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+.required:after {
+    content: " *";
+    color: #dc3545;
+}

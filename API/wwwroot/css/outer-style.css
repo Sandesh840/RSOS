@@ -1,0 +1,248 @@
+﻿
+span.toggle-show-slide {
+    height: 64px;
+    width: 80px;
+    background: #f7f7f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    position: absolute;
+    left: 250px;
+}
+
+.dropdown.user-name-log .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    border: 1px solid #eaeaea;
+    padding-right: 15px;
+    overflow: hidden;
+}
+
+    .dropdown.user-name-log .dropdown-toggle span {
+        margin-left: 15px;
+        width: auto;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 17px;
+        margin-right: 15px;
+    }
+
+.dropdown.user-name-log ul.dropdown-menu {
+    padding: 0;
+}
+
+    .dropdown.user-name-log ul.dropdown-menu a {
+        padding: 10px 15px;
+        border-bottom: 1px solid #e7e7e7;
+        color: #4f4f4f;
+    }
+
+        .dropdown.user-name-log ul.dropdown-menu a .fa {
+            margin-right: 7px;
+        }
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+img.rsos-logo {
+    width: 80px;
+    box-sizing: content-box;
+}
+
+img.education-logo {
+    width: 75px;
+}
+
+.pk-hd-l {
+    background: #ffe1d4;
+    width: calc(100% - 80px);
+    display: flex;
+    justify-content: space-between;
+    padding-left: 15px;
+    padding-right: 15px;
+    align-items: center;
+}
+
+img.logo {
+    margin-right: 0;
+}
+
+a.pk-hd-2 {
+    display: flex;
+    background: #ffffff;
+    height: 75px;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    color: #0363b8;
+    text-decoration: none;
+    font-weight: 600;
+    width: 80px;
+}
+
+nav.navbar.navbar-light {
+    border-bottom: 1px solid #e9e9e9;
+    background: #ffe1d4;
+}
+
+img.government-logo {
+    width: 44px;
+    box-sizing: content-box;
+    margin-right: 15px;
+    border-left: 1px solid #00000012;
+    padding-left: 15px;
+    margin-left: 15px;
+}
+
+.pk-info {
+    background: #e8f0fec7;
+    margin-top: 25px;
+    border-radius: 5px;
+    border: 1px solid #dcdee1;
+    font-size: 14px;
+    padding: 12px;
+    margin-bottom: 15px;
+}
+
+.qestion-head {
+    position: relative;
+    padding-right: 50px;
+    padding-left: 15px;
+}
+
+span.qest-no {
+    position: absolute;
+    left: 0;
+    font-weight: 600;
+}
+
+.Qestion-text {
+    font-weight: 600;
+}
+
+.hints_wrp {
+}
+
+spa.show-hints {
+    font-size: 14px;
+    display: inline-block;
+    background: #8cc9ff;
+    border-radius: 2px;
+    color: #002e56;
+    padding: 0 8px;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.Hint-show {
+    border-top: 1px solid #bfbfbf;
+    margin-top: 7px;
+    padding-top: 7px;
+}
+
+.question-ans-wrp.card {
+    margin-bottom: 15px;
+}
+
+ul.input-labels {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+    ul.input-labels li {
+        margin-bottom: 9px;
+    }
+
+        ul.input-labels li:last-child {
+            margin-bottom: 0;
+        }
+
+.dg-h2 {
+    background: #f1b7c7;
+    padding: 5px 15px;
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.hiper-link {
+    color: #0d6efd;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.logo {
+    max-width: 250px;
+}
+
+#prev {
+    background: #cbd3d3;
+    padding-top: 2px;
+    cursor: default;
+    text-align: center;
+    font-weight: 800;
+    font-size: 22px;
+    margin-left: 15px;
+}
+
+
+
+.pagl {
+    font-size: 15px;
+    font-weight: 600;
+    color: #000;
+}
+
+
+table.basic-datatable th, table.basic-datatable td {
+    font-size: 13px;
+}
+
+.displaySubject-text-right {
+    text-align: right;
+}
+
+@media (max-width:767px) {
+    img.logo {
+        width: 160px;
+    }
+
+    img.education-logo {
+        width: 45px;
+        margin-right: 0;
+    }
+
+    img.rsos-logo {
+        width: 54px;
+        border-right: 0;
+        padding-right: 0;
+        margin-right: 0;
+        padding-left: 2px;
+    }
+
+    .pk-info {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .displaySubject-text-right {
+        text-align: left;
+    }
+    .TblQuestions-ans-wrp .Qestion-text {
+        font-size: 14px;
+    }
+    button#submitResponse {
+        width: 100%;
+        margin-top: 15px !important;
+    }
+}

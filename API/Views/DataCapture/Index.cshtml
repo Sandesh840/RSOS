@@ -1,0 +1,268 @@
+﻿@model RSOS.Controllers.ExamData
+
+@{
+    ViewData["Title"] = "Data Capture";
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="~/lib/jquery 3.6.4/dist/jquery.min.js"></script>
+<script src="~/lib/toastr/build/toastr.min.js"></script>
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="~/lib/toastr/build/toastr.min.css">
+<link href="~/css/outer-style.css" rel="stylesheet" />
+
+<nav class="navbar navbar-light p-0">
+    <div class="container-fluid p-0 header-container">
+        <div class="pk-hd-l">
+            <img src="~/images/rsos-logo.png" alt="logo" class="rsos-logo">
+            <img src="~/images/navbar.png" class="logo" />
+            <img src="~/images/education.png" class="education-logo" />
+            @* <img src="~/images/government.png" class="government-logo" /> *@
+        </div>
+        <a class="pk-hd-2" asp-controller="DataCapture" asp-action="Logout">Logout</a>
+    </div>
+
+</nav>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="dg-h2 mb-1">
+                <p class="pagl mb-0"> प्रिय अभियर्थी, आपके द्वारा चयनित विषयों के ई-पीसीपी के लिंक नीचे दिये गए है, आप विषय पर क्लिक कर के ई-पीसीपी दे सकते है। आपको सभी प्रश्नो के उत्तर देना अनिवार्य है।</p>
+                <div class="row" style="display:none;">
+                    <div class="col-md-6 displaySubject-text" id="displaySubject"></div>
+                    <div class="col-md-6  displaySubject-text-right">आप 4 विकल्पों मे से सही उत्तर को चुने।</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="renderData">
+                <div class="mb-3 d-none">
+                    <div class="d-flex">
+                        <button class="btn btn-success mr-2" id="cls10Btn" onclick="GetSubject(10)">10 Exam</button>
+                        <button class="btn btn-success" id="cls12Btn" onclick="GetSubject(12)">12 Exam</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="renderSubject"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form id="examForm" class="d-none" method="post" asp-controller="DataCapture" asp-action="SaveResponse" autocomplete="off">
+                @Html.AntiForgeryToken()
+                <input type="text" name="ClassId" id="ClassId" />
+                <input type="text" name="SubjectId" id="SubjectId" />
+                <input type="text" name="Score" id="Score" />
+                <input type="text" name="StartTime" id="StartTime" value="@ViewBag.SurveyStartTime" />
+                <input type="text" name="evaluationValue" id="evaluationValue" />
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pk-info text-center">
+                किसी भी समस्या के लिए आप इस नंबर पर संपर्क कर सकते है, &nbsp;&nbsp; फ़ोन - 0141-2717082 एवं 7568736564, &nbsp;&nbsp; ईमेल- adacdrsos@gmail.com
+            </div>
+        </div>
+    </div>
+</div>
+
+@* <input type="hidden" id="ClassId" />
+<input type="hidden" id="SubjectId" />
+<input type="hidden" id="Score" />
+<input type="hidden" id="StartTime" value="@ViewBag.SurveyStartTime" />
+<input type="hidden" id="evaluationValue" /> *@
+<input type="hidden" id="FormEvalGuid" value="@ViewBag.FormEvalGuid" />
+<input type="hidden" id="dataClassSubject" value="@ViewBag.dataClassSubject" />
+
+<script>
+
+    function GetClassSubject() {
+        var jsonData = JSON.parse($('#dataClassSubject').val());
+        $('#ClassId').val(jsonData.data.student.course);
+        var arrSub = [];
+        $.each(jsonData.data.exam_subjects, function (i, j) {
+            arrSub.push(j.subject_id);
+        })
+
+        $('#SubjectId').val(JSON.stringify(arrSub));
+        GetSubject();
+    }
+    $(document).ready(function () {
+        GetClassSubject();
+        // GetSubject(10,[40,16,13,5,1])
+    })
+
+    function GetSubject() {
+        var p = { "classId": $('#ClassId').val(), "subjectId": $('#SubjectId').val() }
+        $.ajax({
+            url: "/DataCapture/GetSubjectList", //Your path should be here
+            type: "GET",
+            data: p,
+            success: function (result) {
+                $('#renderSubject').html(result);
+            },
+            error: function (xhr, status, error) {
+                toastr.error('Internal Server Error.');
+                toastr.options = {
+                    "closeButton": true
+                };
+            }
+        });
+    }
+
+    function GetQuestions(subjectId, subjectName) {
+        $('#SubjectId').val(subjectId);
+        $('#displaySubject').text(subjectName);
+        $('#displaySubject').parent().show();
+
+        var p = { "classId": $('#ClassId').val(), "subjectId": subjectId }
+        $.ajax({
+            url: "/DataCapture/GetQuestionList", //Your path should be here
+            type: "GET",
+            data: p,
+            success: function (result) {
+                $('#renderData').html(result);
+                refreshcaptch();
+            },
+            error: function (xhr, status, error) {
+                toastr.error('Internal Server Error.');
+                toastr.options = {
+                    "closeButton": true
+                };
+            }
+        });
+    }
+
+    function submitResponse() {
+        if ($('#Captcha').val() != "") {
+            if ($('#prev').text() == $('#Captcha').val()) {
+                $('#submitResponse').text('Please wait..');
+                $('#submitResponse').attr('disabled', 'disabled');
+                var arr = [];
+                var valJson = {};
+                var available = 0;
+                var mandatory = '';
+                var correctAnswer = 0;
+                $(".check_qest-wrp").each(function () {
+                    if ($('#' + $(this).find('.QuestionId').text()).is(":visible") == true) {
+                        if ($(this).find('input:checked').val() != undefined) {
+                            available = 1;
+                            valJson["QuestionValue"] = $(this).find('input:checked').val();
+                            correctAnswer += parseInt($(this).find('input:checked').attr('id'));
+                        }
+
+                        if ($(this).find('.IsQuestionMandatory').text() == '1' && available == 0) {
+                            mandatory = 'Please fill Question No. : ' + $(this).find('.QuestionNo').text();
+                            return false;
+                        }
+
+                        if (available == 1) {
+                            valJson["Id"] = 0;
+                            valJson["GUID"] = $('#FormEvalGuid').val();
+                            valJson["QuizGUID"] = $('#FormEvalGuid').val();
+                            valJson["QuestionId"] = parseInt($(this).find('.QuestionId').text());
+                            arr.push(valJson);
+                            valJson = {};
+                            available = 0;
+                        }
+                    }
+                });
+
+                if (arr.length == 0) {
+                    mandatory = 'Fill give some questions answer.';
+                }
+                if (mandatory == '') {
+                    var score = (correctAnswer * 100) / parseInt($('#TotalQuestions').val());
+                    $('#Score').val(score);
+                    $('#evaluationValue').val(JSON.stringify(arr));
+
+                    $('#examForm').submit();
+                    // var formData = { "ClassId": parseInt($('#ClassId').val()), "SubjectId": parseInt($('#SubjectId').val()), "Score": score, "StartTime": $('#StartTime').val(), "evaluationValue": JSON.stringify(arr) };
+                    // var formData = new FormData();
+                    // formData.append("ClassId", $('#ClassId').val());
+                    // formData.append("SubjectId", $('#SubjectId').val());
+                    // formData.append("Score", score);
+                    // formData.append("StartTime", $('#StartTime').val());
+                    // formData.append("evaluationValue", JSON.stringify(arr));
+                    // $.ajax({
+                    //     url: "/DataCapture/SaveResponse", //Your path should be here
+                    //     type: "POST",
+                    //     data: formData,
+                    //     processData:false,
+                    //     contentType:false,
+                    //     success: function (result) {
+                    //         if (result == 1) {
+                    //             toastr.success('Data saved successfully.');
+                    //             toastr.options = {
+                    //                 "closeButton": true
+                    //             };
+                    //             $('#renderData').html("<h1>उत्तर सफलतापूर्वक सबमिट किया गया</h1>");
+                    //             window.location.reload();
+                    //         } else if (result == 2) {
+                    //             toastr.warning('You already submit this exam.');
+                    //             toastr.options = {
+                    //                 "closeButton": true
+                    //             };
+                    //         } else {
+                    //             toastr.error('Something went wrong.');
+                    //             toastr.options = {
+                    //                 "closeButton": true
+                    //             };
+                    //         }
+
+                    //     },
+                    //     error: function (xhr, status, error) {
+                    //         toastr.error('Internal Server Error.');
+                    //         toastr.options = {
+                    //             "closeButton": true
+                    //         };
+                    //     }
+                    // });
+                } else {
+                    toastr.info(mandatory + ".");
+                    toastr.options = {
+                        "closeButton": true
+                    };
+                    $('#submitResponse').text('Submit');
+                    $('#submitResponse').removeAttr('disabled');
+                }
+            } else {
+                toastr.info("Please enter correct captcha.");
+                toastr.options = {
+                    "closeButton": true
+                };
+            }
+        } else {
+            toastr.info("Please enter captcha.");
+            toastr.options = {
+                "closeButton": true
+            };
+        }
+    }
+
+    function refreshcaptch() {
+        var str = generateRandom(6);
+        $('#prev').text(str);
+    }
+
+    function generateRandom(length) {
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        let counter = 0;
+        while (counter < length) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            counter += 1;
+        }
+        return result;
+    }
+
+</script>

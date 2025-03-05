@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Enrollment Uploads";
+}
+
+<style>
+    .input-group-text {
+        cursor: pointer;
+    }
+
+    .file-name-span {
+        flex-grow: 1;
+        padding: 0.375rem 0.75rem;
+        margin-bottom: 0;
+    }
+</style>
+
+<div class="row p-4">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <h4 class="page-title">Enrollment Upload</h4>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row" id="enrollment-list">
+                    <div class="col-md-4 mb-3">
+                        <a class="btn btn-danger btn-block" id="download" asp-controller="Enrollment" asp-action="DownloadTemplate">
+                            <i class="fa-solid fa-download"></i> Download Enrollment Template
+                        </a>
+                    </div>
+                    <div class="col-md-8">
+                        <form data-ajax="true" data-ajax-method="POST" enctype="multipart/form-data" asp-controller="Enrollment" asp-action="UploadEnrollmentExcel" data-ajax-success="OnEnrollmentUpload">
+                            <div class="input-group">
+                                <label for="excelFileInput" class="input-group-text btn btn-info">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Choose File
+                                </label>
+                                <input type="file" name="excelFile" class="form-control" id="excelFileInput" accept=".xlsx" style="display: none;" onchange="displayFileName(this)" />
+                                <span class="file-name-span form-control"></span>
+                                <button type="submit" class="btn btn-info ms-2">
+                                    <i class="fa-solid fa-upload"></i> Import
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function displayFileName(input) {
+        let fileName = input.files[0].name;
+        $(".file-name-span").text(fileName);
+    }
+
+    toastr.options = {
+        "closeButton": true
+    };
+
+    function OnEnrollmentUpload(data){
+        $("#excelFileInput").val("");
+        $(".file-name-span").text("");
+        if (data.errorType === 1) {
+            toastr.warning(data.errorMessage);
+        }
+        else if (data.errorType === 0){
+            toastr.success(data.successMessage);
+        }
+    }
+</script>

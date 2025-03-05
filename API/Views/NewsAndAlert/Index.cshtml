@@ -1,0 +1,17 @@
+﻿@using Application.DTOs.NewsAndAlert
+@model List<Application.DTOs.NewsAndAlert.NewsAndAlertResponseDTO>
+
+@{
+    ViewData["Title"] = "News And Alerts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row p-4">
+    <div id="news-and-alerts-list"> 
+        @{
+            await Html.RenderPartialAsync("_NewsAndAlertList", Model);
+        }
+    </div>
+
+    <partial name="_AddUpdateNewNewsAndAlert" model="new NewsAndAlertRequestDTO()" />
+</div>
