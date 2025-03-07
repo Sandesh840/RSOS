@@ -51,24 +51,31 @@ public class GenericRepository : IGenericRepository
     
     public async Task<int> InsertAsync<TEntity>(TEntity entity) where TEntity : class
     {
-        ArgumentNullException.ThrowIfNull(entity);
-        
-        await _dbContext.Set<TEntity>().AddAsync(entity);
-        
-        await _dbContext.SaveChangesAsync();
-        
-        var ret = 0;
-        
-        var key = typeof(TEntity).GetProperties().FirstOrDefault(p => 
-            p.CustomAttributes.Any(attr => 
-                attr.AttributeType == typeof(KeyAttribute)));
-
-        if (key != null)
+        try
         {
-            ret = (int)(key.GetValue(entity, null) ?? 0);
+            ArgumentNullException.ThrowIfNull(entity);
+
+            await _dbContext.Set<TEntity>().AddAsync(entity);
+            await _dbContext.SaveChangesAsync(); // Save changes first!
+
+            // Get the primary key property
+            var keyProperty = typeof(TEntity).GetProperties()
+                .FirstOrDefault(p => p.CustomAttributes
+                    .Any(attr => attr.AttributeType == typeof(KeyAttribute)));
+
+            if (keyProperty != null)
+            {
+                // Retrieve the auto-generated ID after insertion
+                var idValue = keyProperty.GetValue(entity, null);
+                return idValue != null ? Convert.ToInt32(idValue) : 0;
+            }
+
+            return 0; // Default return value if no key is found
         }
-        
-        return ret;
+        catch (Exception)
+        {
+            throw; // Preserve original exception stack trace
+        }
     }
 
     public async Task AddMultipleEntityAsync<TEntity>(IEnumerable<TEntity> entityList) where TEntity : class

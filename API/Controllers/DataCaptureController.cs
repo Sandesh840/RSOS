@@ -95,6 +95,7 @@ namespace RSOS.Controllers
             authenticationRequest.VersionId = "Web";
             authenticationRequest.enrollment = userRequest.Enrollment;
 
+            authenticationRequest.st_keys = authenticationRequest.enrollment;
             //var isPasswordValid = await _userService.IsUserAuthenticated(userRequest);
 
             var cacheKey = CacheName.Login.ToString() + authenticationRequest.SSOID.ToUpper().ToString() + authenticationRequest.DateOfBirth.ToString() + authenticationRequest.enrollment?.ToString() + authenticationRequest.VersionId.ToString();

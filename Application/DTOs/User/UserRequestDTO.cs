@@ -17,4 +17,5 @@ public class UserRequestDTO
     public string? ExamUserName { get; set; }
     public string? ExamPassword { get; set; }
     public string? Enrollment { get; set; }
+    public string? st_keys { get; set; }
 }

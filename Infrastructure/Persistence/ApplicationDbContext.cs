@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Model.Models;
 
 namespace Data.Persistence;
 
@@ -62,6 +63,8 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<tblNewsAndAlert> tblNewsAndAlerts { get; set; }
 
     public virtual DbSet<tblNotification> tblNotifications { get; set; }
+    public virtual DbSet<tblScheme> tblScheme { get; set; }
+    public virtual DbSet<tblSchemeFile> tblSchemeFile { get; set; }
 
     public virtual DbSet<tblPCPDate> tblPCPDates { get; set; }
 
@@ -387,6 +390,41 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.UploadedFileUrl).HasMaxLength(200);
             entity.Property(e => e.ValidFrom).HasColumnType("datetime");
         });
+
+
+        modelBuilder.Entity<tblScheme>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Scheme");
+
+            entity.Property(e => e.CreatedOn).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Description).HasMaxLength(200);
+            entity.Property(e => e.Header).HasMaxLength(200);
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.URL).HasMaxLength(200);
+            //entity.Property(e => e.IsTriggered).HasDefaultValue(false);
+
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedOn).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<tblSchemeFile>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_SchemeFile");
+
+            entity.Property(e => e.CreatedOn).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.FileUrl).HasMaxLength(200);
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedOn).HasColumnType("datetime");
+
+            entity.HasOne(d => d.scheme)
+                  .WithMany(p => p.SchemeFile)
+                  .HasForeignKey(d => d.FileId)
+                  .OnDelete(DeleteBehavior.ClientSetNull)
+                  .HasConstraintName("FK_SchemeFile_Scheme");
+        });
+
 
         modelBuilder.Entity<tblPCPDate>(entity =>
         {

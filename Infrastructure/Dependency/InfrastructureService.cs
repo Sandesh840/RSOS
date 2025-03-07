@@ -52,6 +52,7 @@ public static class InfrastructureService
         services.AddScoped<IModelService, ModelService>();
         services.AddScoped<INewsAndAlertService, NewsAndAlertService>();
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<ISchemeService, SchemeService>();
         services.AddScoped<IPcpDatesService, PcpDatesService>();
         services.AddScoped<IPCPService, PCPService>();
         services.AddScoped<IPdfService, PDFService>();

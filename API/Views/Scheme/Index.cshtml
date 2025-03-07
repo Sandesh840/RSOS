@@ -1,0 +1,19 @@
+﻿@using Application.DTOs.Scheme
+@model List<Application.DTOs.Scheme.SchemeResponseDTO>
+
+@{
+    ViewData["Title"] = "Scheme";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<partial name="_Scheme"/>
+
+<div class="row p-4">
+    <div id="scheme-list">
+        @{
+            await Html.RenderPartialAsync("_SchemeList", Model);
+        }
+    </div>
+
+    <partial name="_AddUpdateNewScheme" model="new SchemeRequestDTO()" />
+</div>
